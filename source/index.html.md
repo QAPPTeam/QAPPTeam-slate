@@ -263,12 +263,14 @@ exports.researcherCreate = function (req, res) {
 The sighup endpoint creates a user ojebct useing the schmeas listed above, hashes the password the user typed in, and saves the user data to the database.
 
 The two signup endpoints are acces via the routes 
+
 * /user/registerResearcher 
-* /user/regiterParticipant
+* /user/registerParticipant
 
 ## Login endpoint
 
 > requires db to access database and bcrypt the compare hashed and unhashed passwords
+
 ```javascript
 const db = require("../db");
 const bcrypt = require('bcrypt');
@@ -300,15 +302,18 @@ exports.userLogin = function (req, res){
           });
 }
 ```
+
 The User is identified by a unique email and password
 The login endpoint saves a user's unique ID to a session state to that it can be checked before the user accesses other checkpoints.
 
 Login is accessed via the endpoint
+
 * /user/login
 
 # Studies
 
 ## Study Routes
+
 ```javascript
 const express = require('express');
 const router = express.Router();
@@ -360,6 +365,8 @@ module.exports = mongoose.model('Study', StudySchema);
 ```
 Model for studies, based on provided schema
 
+For more information about mongoose schemas [go here](https://mongoosejs.com/docs/schematypes.html).
+
 ## Create studies
 ```javascript
 const Study = require('../models/study.model');
@@ -390,7 +397,7 @@ exports.studyCreate = function (req, res) {
         })
 };
 ```
-Creates a study according to the Study model and saves it to the studies collection of the database.
+Creates a study according to the [study model](#study-model) and saves it to the studies collection of the database.
 
 ## get all studies
 ```javascript
@@ -404,7 +411,9 @@ exports.studyGet = function (req, res) {
     //returns all studies, queries needed for returning only studies with certain attributes
 };
 ```
+
 >This code return a json like this
+
 ```json
 {
     "name": "name",
@@ -419,10 +428,12 @@ exports.studyGet = function (req, res) {
     "researcher": "a persons name",
 }
 ```
+
 This endpoint return a list of all studies.
 It need to be modefied to return an amount and an endpoint needs to be added to get studies matching certain criteria
 
 accessible by
+
 * /study/get
 
 # TODO

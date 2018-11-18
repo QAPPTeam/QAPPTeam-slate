@@ -1,7 +1,7 @@
 # Errors
 
 <aside class="notice">
-useful are not fully implemented, most errors do not currently return the correct error code
+useful error messages are not fully implemented, most errors do not currently return the correct error code
 </aside>
 
 API uses the following error codes:
