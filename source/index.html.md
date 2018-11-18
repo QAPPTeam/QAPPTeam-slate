@@ -264,8 +264,8 @@ The sighup endpoint creates a user ojebct useing the schmeas listed above, hashe
 
 The two signup endpoints are acces via the routes 
 
-* /user/registerResearcher 
-* /user/registerParticipant
+* https://research-stream.herokuapp.com/user/registerResearcher 
+* https://research-stream.herokuapp.com/user/registerParticipant
 
 ## Login endpoint
 
@@ -308,7 +308,7 @@ The login endpoint saves a user's unique ID to a session state to that it can be
 
 Login is accessed via the endpoint
 
-* /user/login
+* https://research-stream.herokuapp.com/user/login
 
 # Studies
 
@@ -399,6 +399,10 @@ exports.studyCreate = function (req, res) {
 ```
 Creates a study according to the [study model](#study-model) and saves it to the studies collection of the database.
 
+This endpoint can be accessed through
+
+* https://research-stream.herokuapp.com/study/get
+
 ## get all studies
 ```javascript
 const db = require('../db');
@@ -434,7 +438,7 @@ It need to be modefied to return an amount and an endpoint needs to be added to 
 
 accessible by
 
-* /study/get
+* https://research-stream.herokuapp.com/study/get
 
 # TODO
 
