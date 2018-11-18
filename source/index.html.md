@@ -421,6 +421,9 @@ exports.studyGet = function (req, res) {
 This endpoint return a list of all studies.
 It need to be modefied to return an amount and an endpoint needs to be added to get studies matching certain criteria
 
+accessible by
+* /study/get
+
 # TODO
 
 1. Messageing endpoint documentation
