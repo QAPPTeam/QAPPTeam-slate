@@ -15,7 +15,9 @@ search: true
 
 # Introduction
 
-Welcome to the API documentation page
+Welcome to the API documentation page.
+
+This API is currently being hosted on [Heroku](https://research-stream.herokuapp.com/) and uses MongoDB Atlas to host the databases.
 
 This example API documentation page was created with [Slate](https://github.com/lord/slate).
 
