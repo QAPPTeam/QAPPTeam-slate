@@ -192,7 +192,8 @@ For more information about mongoose schemas [go here](https://mongoosejs.com/doc
 
 ## Signup enpoints
 
->require the participant and researcher models from above and bcrypt to encrypt passwords before they are saved to the database
+> require the participant and researcher models from above and bcrypt to encrypt passwords before they are saved to the database
+
 ```javascript
 const Participant = require('../models/participant.model');
 const Researcher = require('../models/researcher.model');
@@ -225,7 +226,6 @@ exports.participantCreate = function (req, res) {
         })
 });
 };
-
 //register researcher endpoint
 exports.researcherCreate = function (req, res) {
     var pass = req.body.password
@@ -257,6 +257,7 @@ exports.researcherCreate = function (req, res) {
     });
 }
 ```
+
 >Signup endpoints are different for participants and researcher (could be combined into one)
 
 The sighup endpoint creates a user ojebct useing the schmeas listed above, hashes the password the user typed in, and saves the user data to the database.
