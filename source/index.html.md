@@ -79,8 +79,9 @@ The connect function is written in a different document so other endpoints also 
 The app is initiated at the end of this function.
 
 ## Connecting to Mongodb Atlas
+
 ```javascript
-var MongoClient = require('mongodb').MongoClient
+mongoose
 
 let _db
 
@@ -91,7 +92,7 @@ module.exports = {
 
 function connect(callback) {
   if (_db) return
-  MongoClient.connect("mongodb+srv://15lc50:W!ldcats@cluster0-mfedp.mongodb.net/test?retryWrites=true", function(err, client) {
+  mongoose.connect("mongodb+srv://15lc50:W!ldcats@cluster0-mfedp.mongodb.net/test?retryWrites=true", function(err, client) {
     if (err){
         return callback(err);
     } 
@@ -109,7 +110,7 @@ function get(){
 }
 ```
 The connect function uses a url aquired from the mongodb Atlas page to connect to the database
-in order to connect the ip address of the computer running this code has to be whitelisted in mongoDB Atlas
+in order to connect the ip address of the computer running this code has to be whitelisted in mongoDB Atlas. It connects useing the mongoose connect function so that mongoose schemas can be used when saveing users and studies.
 
 The get function returns the database connection object for use in other functions
 
@@ -127,9 +128,12 @@ const userController = require('../controllers/user.controller');
 router.post('/registerParticipant', userController.participantCreate);
 router.post('/registerResearcher', userController.researcherCreate);
 router.post('/login', userController.userLogin);
+router.post('/update', userController.userUpdate);
 module.exports = router;
 ```
-User routes, connect user routes to apporpriate user controller
+User routes, connect user routes to apporpriate user controller.
+
+The User Routes incluse 2 routes to register participants and researchers, one endpoint for logging users in and one for updateing user information.
 
 ## Researcher Model
 
@@ -151,14 +155,23 @@ let ResearcherSchema = new Schema({
     usertype: {type: String, required:true, match:/researcher/}
 }); //add better error messages
 
-module.exports = mongoose.model('Researcher', ResearcherSchema);
+module.exports = mongoose.model('Researcher', ResearcherSchema, "User");
 ```
 
 > There are separate user models for researchers and participants
 
-The use of mongoose shemas allows for thorough verification of inputs before they are saved to the database, all the inputs to the schema are currently required
+The use of mongoose shemas allows for thorough verification of inputs before they are saved to the database.
+
+Validation parameters | effect
+--------------------- | ---------
+type | The type of item, all items in this schema are strings
+required | This input is required, all items in this schema are required
+maxlength | The max length of a string
+match | item must max the regex statement
 
 For more information about mongoose schemas [go here](https://mongoosejs.com/docs/schematypes.html).
+
+Items created useing this model are saved to the User collection in the database
 
 ## Participant Model
 
@@ -179,7 +192,7 @@ let ParticipantSchema = new Schema({
     studies: {type: Array}
 });
 
-module.exports = mongoose.model('Researcher', ResearcherSchema);
+module.exports = mongoose.model('Researcher', ResearcherSchema, "User");
 ```
 
 > There are separate user models for researchers and participants
@@ -188,7 +201,16 @@ The User model requires fewer inputs than the Researcher model (no department or
 
 'Studies' array will be filled with study objects with specific times the user has signed up for, the calander endpoint is not implemented yet.
 
-The use of mongoose shemas allows for thorough verification of inputs before they are saved to the database, all the inputs to the schema are currently required
+The use of mongoose shemas allows for thorough verification of inputs before they are saved to the database.
+
+Validation parameters | effect
+--------------------- | ---------
+type | The type of item, the three kinds of items in this schema are strings, numbers, and arrays
+required | This input is required, all items in this schema are required
+maxlength | The max length of a string
+match | item must max the regex statement
+
+participant model is always saved to the User collection
 
 For more information about mongoose schemas [go here](https://mongoosejs.com/docs/schematypes.html).
 
@@ -202,11 +224,12 @@ const Researcher = require('../models/researcher.model');
 const bcrypt = require('bcrypt');
 
 //register user endpoint
-exports.participantCreate = function (req, res) {
+//register user endpoint
+function participantCreate (req, res) {
     var pass = req.body.password
     bcrypt.hash(pass, 10, function (err, hash){
         if (err) {
-          return (err);
+          console.log(err);
         }
     let participant = new Participant(
         {
@@ -214,26 +237,27 @@ exports.participantCreate = function (req, res) {
             age: req.body.age,
             city: req.body.city,
             phonenum: req.body.phonenum,
-            email: req.body.email, 
+            email: req.body.email,  //make e mails and phone numbers unique
             password: hash,
-        },
+        },//dont know what the contraints are for the parameters, will add later
         //user input not sanatised?
     )
         participant.save(function(err){
             if(err){
-                console.log(err)
+                console.error(err,500)
             } else{
-                res.send("participant created successfully")
+                res.send(participant)
             }
         })
 });
 };
+
 //register researcher endpoint
-exports.researcherCreate = function (req, res) {
+function researcherCreate(req, res) {
     var pass = req.body.password
     bcrypt.hash(pass, 10, function (err, hash){
         if (err) {
-          return (err);
+          console.log(err,500);
         }
         let researcher = new Researcher(
             {
@@ -241,6 +265,7 @@ exports.researcherCreate = function (req, res) {
                 institution: req.body.institution,
                 department: req.body.department,
                 address: req.body.address,
+                country: req.body.country,
                 phonenum: req.body.phonenum,
                 email: req.body.email, //make emails and phone numbers unique
                 password: hash,
@@ -250,17 +275,16 @@ exports.researcherCreate = function (req, res) {
         )
         researcher.save(function(err){
             if(err){
-                console.log(err)
-                res.send("error creating researcher");
+                console.error(err,500)
             } else{
-                res.send("researcher created successfully");
+                res.send(researcher)
             }
         })
     });
 }
 ```
 
->Signup endpoints are different for participants and researcher (could be combined into one)
+>Signup endpoints are different for participants and researcher
 
 The sighup endpoint creates a user ojebct useing the schmeas listed above, hashes the password the user typed in, and saves the user data to the database.
 
@@ -274,34 +298,27 @@ The two signup endpoints are acces via the routes
 > requires db to access database and bcrypt the compare hashed and unhashed passwords
 
 ```javascript
-const db = require("../db");
-const bcrypt = require('bcrypt');
-
-exports.userLogin = function (req, res){
+function userLogin(req, res){
     var email = req.body.email;
     var password = req.body.password;
-    var connection = db.get();
-    connection.db("ResearchDB").collection("Users").findOne({ email: email }, function (err, user) {
-        if (err) {
-            return (err)
-        } else if(req.session.userId){
-            console.log("user is already logged in");
+    db.get().collection("User").findOne({ email: email }, function (err, user) {
+        if (err) return error
+        else if(req.session.userId){
+            console.log("User is already logged in");
         } else if (!user) {
-            var err = new Error('User not found.');
-            err.status = 401;
-            return (err);
+            return ("Username or password is incorrect",406);
         } else {
         bcrypt.compare(password, user.password, function (err, result) {
             if (result === true) {
-                res.send("passwords match");
+                res.send("Logged in");
             } else {
-                res.send("passwords dont match");
+                res.send("Username or password is incorrect",406);
             };
             });
             req.session.userId = user._id
-            //TODO save user information to session
         }
-          });
+        });
+
 }
 ```
 
@@ -312,6 +329,27 @@ Login is accessed via the endpoint
 
 * https://research-stream.herokuapp.com/user/login
 
+## User Update Endpoint
+
+```javascript
+function userUpdate(req,res){
+    user = db.get().collection("User").findOne({_id : req.session.userId}, function(err){
+    if(err) return (err,500)
+    else if(isEmpy(user)){
+        return new Error("This user no longer exists",406);
+    }
+    });
+    if(user.usertype = "researcher"){
+        researcherCreate(req, res);
+    } else{
+        participantCreate(req,res);
+    }
+
+}
+```
+
+This enpoint updates user information. It does this by calling the create user endpoint which validates input and, if an object with the same id already exists, performes and update action instead of a create action (mongoose takes care of this useing the user.save())
+
 # Studies
 
 ## Study Routes
@@ -319,16 +357,12 @@ Login is accessed via the endpoint
 ```javascript
 const express = require('express');
 const router = express.Router();
-var session = require('express-session');
 
 function requiresLogin(req, res, next) {
     if (req.session && req.session.userId) {
       return next();
     } else {
-        console.log(req.session.userId);
-        var err = new Error('You must be logged in to view this page.');
-        err.status = 401;
-        return next(err);
+        return ('You must be logged in to view this page.', 401);
     }
   }
 
@@ -337,7 +371,11 @@ const studyController = require('../controllers/study.controller');
 
 // post endpoint to add study to database
 router.post('/create', requiresLogin, studyController.studyCreate);
-router.get('/get', requiresLogin, studyController.studyGet)
+router.get('/get', requiresLogin, studyController.studyGet);
+router.get('/:name', requiresLogin, studyController.getName);
+router.get('/:location', requiresLogin, studyController.getLocation);
+router.get('/:lab', requiresLogin, studyController.getLab);
+router.get('/:researcher', requiresLogin, studyController.getResearcher);
 module.exports = router;
 ```
 Connect Study routes to apporpriate study controller
@@ -363,9 +401,16 @@ let StudySchema = new Schema({
     researcher: {type:String, required: true}
 });
 
-module.exports = mongoose.model('Study', StudySchema);
+module.exports = mongoose.model('Study', StudySchema, "Study");
 ```
 Model for studies, based on provided schema
+
+Validation parameters | effect
+--------------------- | ---------
+type | The type of item, the three kinds of items in this schema are strings and numbers
+required | This input is required, all items in this schema are required
+maxlength | The max length of a string
+match | item must max the regex statement
 
 For more information about mongoose schemas [go here](https://mongoosejs.com/docs/schematypes.html).
 
@@ -391,10 +436,9 @@ exports.studyCreate = function (req, res) {
     )
         study.save(function(err){
             if(err){
-                console.log(err)
-                res.send("error Saveing study to DB");
+                console.log(err,500)
             } else{
-                res.send("study created successfully");
+                res.send("researcher created successfully")
             }
         })
 };
@@ -414,7 +458,6 @@ exports.studyGet = function (req, res) {
         if (err) throw err;
         res.send(result);
     });
-    //returns all studies, queries needed for returning only studies with certain attributes
 };
 ```
 
@@ -436,11 +479,63 @@ exports.studyGet = function (req, res) {
 ```
 
 This endpoint return a list of all studies.
-It need to be modefied to return an amount and an endpoint needs to be added to get studies matching certain criteria
+The endpoints for returning only some studies depending on certain attributes
 
 accessible by
 
 * https://research-stream.herokuapp.com/study/get
+
+## get some studies
+
+```javascript
+
+//name
+exports.getName = function (req, res) {
+    db.get().collection("Study").find({name:req.param.id}).toArray(function(err, result) {
+        if (err) console.log(err,500);
+        else{
+            res.send(result.length + " studies have this name\n" + result);
+        }
+    });
+    //lists the number of studies with the specified name and returns studies with a specific name
+};
+
+//location
+exports.getLocation = function (req, res) {
+    db.get().collection("Study").collection('Studies').find({location:req.param.location}).toArray(function(err, result) {
+        if (err) console.log(err,500);
+        else{
+            res.send(result.length + " studies in this location\n" + result);
+        }
+    });
+    //lists the number of studies with the specified locaation and returns list of studies with this name
+};
+
+//lab
+exports.getLab = function (req, res) {
+    db.get().collection("Study").db("ResearchDB").collection('Studies').find({lab:req.param.lab}).toArray(function(err, result) {
+        if (err) console.log(err,500);
+        else{
+            res.send(result.length + " studies executed in this lab\n" + result);
+        }
+    });
+    //lists the number of studies with the specified location and returns list of studies with this name
+};
+
+//researcher
+exports.getResearcher = function (req, res) {
+    db.get().collection("Study").db("ResearchDB").collection('Studies').find({researcher:req.param.researcher}).toArray(function(err, result) {
+        if (err) console.log(err,500);
+        else{
+            res.send(result.length + " studies conducted by " + researcher + "\n" + result);
+        }
+    });
+    //lists the number of studies with the specified locaation and returns list of studies with this name
+};
+```
+
+These endpoints return studies by name, location, lab, and researcher.
+These studies are returned in a json containging an array of studies in the same format at the endpoint above and returns all studies.
 
 # TODO
 

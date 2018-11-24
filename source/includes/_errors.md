@@ -13,6 +13,6 @@ Error Code | Meaning
 401 | Unauthorized -- Your API key is wrong.
 404 | Not Found -- The specified user or study could not be found.
 405 | Method Not Allowed
-406 | Not Acceptable
+406 | Invalid Input
 500 | Internal Server Error -- We had a problem with our server. Try again later.
 503 | Service Unavailable -- We're temporarily offline for maintenance. Please try again later.
