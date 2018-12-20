@@ -532,13 +532,15 @@ in order to connect the ip address of the computer running this code has to be w
         <span class="p">},</span><span class="c1">//dont know what the contraints are for the parameters, will add later</span>
         <span class="c1">//user input not sanatised?</span>
     <span class="p">)</span>
-        <span class="nx">participant</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span>
-            <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span>
-                <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="mi">500</span><span class="p">)</span>
-            <span class="p">}</span> <span class="k">else</span><span class="p">{</span>
-                <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">participant</span><span class="p">)</span>
-            <span class="p">}</span>
-        <span class="p">})</span>
+
+    <span class="kd">var</span> <span class="nx">newParticipant</span> <span class="o">=</span> <span class="p">{};</span>
+    <span class="nx">newParticipant</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="nx">newParticipant</span><span class="p">,</span> <span class="nx">participant</span><span class="p">.</span><span class="nx">_doc</span><span class="p">);</span>
+    <span class="k">delete</span> <span class="nx">newParticipant</span><span class="p">.</span><span class="nx">_id</span><span class="p">;</span>
+
+    <span class="nx">Participant</span><span class="p">.</span><span class="nx">findOneAndUpdate</span><span class="p">({</span><span class="na">_id</span><span class="p">:</span> <span class="nx">ObjectId</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">userId</span><span class="p">)},</span> <span class="nx">newParticipant</span><span class="p">,</span> <span class="p">{</span><span class="na">upsert</span><span class="p">:</span> <span class="kc">true</span><span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+         <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+         <span class="k">else</span> <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s2">"success"</span><span class="p">)</span>
+    <span class="p">});</span>
 <span class="p">});</span>
 <span class="p">};</span>
 
@@ -563,13 +565,14 @@ in order to connect the ip address of the computer running this code has to be w
             <span class="p">},</span><span class="c1">//dont know what the contraints are for the parameters, will check later</span>
             <span class="c1">//user input not sanatised</span>
         <span class="p">)</span>
-        <span class="nx">researcher</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span>
-            <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span>
-                <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="mi">500</span><span class="p">)</span>
-            <span class="p">}</span> <span class="k">else</span><span class="p">{</span>
-                <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">researcher</span><span class="p">)</span>
-            <span class="p">}</span>
-        <span class="p">})</span>
+        <span class="kd">var</span> <span class="nx">newResearcher</span> <span class="o">=</span> <span class="p">{};</span>
+        <span class="nx">newResearcher</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="nx">newResearcher</span><span class="p">,</span> <span class="nx">researcher</span><span class="p">.</span><span class="nx">_doc</span><span class="p">);</span>
+        <span class="k">delete</span> <span class="nx">newResearcher</span><span class="p">.</span><span class="nx">_id</span><span class="p">;</span>
+
+        <span class="nx">Researcher</span><span class="p">.</span><span class="nx">findOneAndUpdate</span><span class="p">({</span><span class="na">_id</span><span class="p">:</span> <span class="nx">ObjectId</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">userId</span><span class="p">)},</span> <span class="nx">newResearcher</span><span class="p">,</span> <span class="p">{</span><span class="na">upsert</span><span class="p">:</span> <span class="kc">true</span><span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+             <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+             <span class="k">else</span> <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s2">"success"</span><span class="p">)</span>
+        <span class="p">});</span>
     <span class="p">});</span>
 <span class="p">}</span>
 </code></pre>
@@ -732,14 +735,17 @@ The login endpoint saves a user&#39;s unique ID to a session state to that it ca
         <span class="nx">study</span><span class="p">.</span><span class="nx">ethicsClearance</span><span class="p">.</span><span class="nx">data</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">path</span><span class="p">);</span>
         <span class="nx">study</span><span class="p">.</span><span class="nx">ethicsClearance</span><span class="p">.</span><span class="nx">contentType</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">path</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">'.'</span><span class="p">).</span><span class="nx">pop</span><span class="p">();;</span>
 
-        <span class="c1">//user input not sanatised?</span>
-        <span class="nx">study</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span>
-            <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span>
-                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="mi">500</span><span class="p">)</span>
-            <span class="p">}</span> <span class="k">else</span><span class="p">{</span>
-                <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s2">"study created successfully"</span><span class="p">)</span>
-            <span class="p">}</span>
-        <span class="p">})</span>
+
+            <span class="c1">//user input not sanatised?</span>
+            <span class="kd">var</span> <span class="nx">newStudy</span> <span class="o">=</span> <span class="p">{};</span>
+            <span class="nx">newStudy</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="nx">newStudy</span><span class="p">,</span> <span class="nx">study</span><span class="p">.</span><span class="nx">_doc</span><span class="p">);</span>
+            <span class="k">delete</span> <span class="nx">newStudy</span><span class="p">.</span><span class="nx">_id</span><span class="p">;</span>
+
+            <span class="nx">Study</span><span class="p">.</span><span class="nx">findOneAndUpdate</span><span class="p">({</span><span class="na">_id</span><span class="p">:</span> <span class="nx">ObjectId</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">_id</span><span class="p">)},</span> <span class="nx">newStudy</span><span class="p">,</span> <span class="p">{</span><span class="na">upsert</span><span class="p">:</span> <span class="kc">true</span><span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+                 <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+                 <span class="k">else</span> <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s2">"success"</span><span class="p">)</span>
+            <span class="p">});</span>
+    <span class="p">})</span>
 <span class="p">};</span>
 </code></pre>
 <p>Creates a study according to the <a href="#study-model">study model</a> and saves it to the studies collection of the database.</p>
