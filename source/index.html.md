@@ -242,13 +242,15 @@ function participantCreate (req, res) {
         },//dont know what the contraints are for the parameters, will add later
         //user input not sanatised?
     )
-        participant.save(function(err){
-            if(err){
-                console.error(err,500)
-            } else{
-                res.send(participant)
-            }
-        })
+
+    var newParticipant = {};
+    newParticipant = Object.assign(newParticipant, participant._doc);
+    delete newParticipant._id;
+  
+    Participant.findOneAndUpdate({_id: ObjectId(req.session.userId)}, newParticipant, {upsert: true}, function (err) {
+         if (err) console.log(err)
+         else res.send("success")
+    });
 });
 };
 
@@ -273,13 +275,14 @@ function researcherCreate(req, res) {
             },//dont know what the contraints are for the parameters, will check later
             //user input not sanatised
         )
-        researcher.save(function(err){
-            if(err){
-                console.error(err,500)
-            } else{
-                res.send(researcher)
-            }
-        })
+        var newResearcher = {};
+        newResearcher = Object.assign(newResearcher, researcher._doc);
+        delete newResearcher._id;
+      
+        Researcher.findOneAndUpdate({_id: ObjectId(req.session.userId)}, newResearcher, {upsert: true}, function (err) {
+             if (err) console.log(err)
+             else res.send("success")
+        });
     });
 }
 ```
@@ -441,14 +444,17 @@ exports.studyCreate = function (req, res) {
         study.ethicsClearance.data = fs.readFileSync(req.body.path);
         study.ethicsClearance.contentType = req.body.path.split('.').pop();;
 
-        //user input not sanatised?
-        study.save(function(err){
-            if(err){
-                console.log(err,500)
-            } else{
-                res.send("study created successfully")
-            }
-        })
+        
+            //user input not sanatised?
+            var newStudy = {};
+            newStudy = Object.assign(newStudy, study._doc);
+            delete newStudy._id;
+          
+            Study.findOneAndUpdate({_id: ObjectId(req.body._id)}, newStudy, {upsert: true}, function (err) {
+                 if (err) console.log(err)
+                 else res.send("success")
+            });
+    })
 };
 ```
 Creates a study according to the [study model](#study-model) and saves it to the studies collection of the database.
