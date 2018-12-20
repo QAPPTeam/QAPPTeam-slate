@@ -372,10 +372,12 @@ const studyController = require('../controllers/study.controller');
 // post endpoint to add study to database
 router.post('/create', requiresLogin, studyController.studyCreate);
 router.get('/get', requiresLogin, studyController.studyGet);
-router.get('/:name', requiresLogin, studyController.getName);
-router.get('/:location', requiresLogin, studyController.getLocation);
-router.get('/:lab', requiresLogin, studyController.getLab);
-router.get('/:researcher', requiresLogin, studyController.getResearcher);
+router.get('/:id/EthicsClearance', requiresLogin, studyController.getEthics);
+router.get('/id/:id', requiresLogin, studyController.getId);
+router.get('/name/:name', requiresLogin, studyController.getName);
+router.get('/location/:location', requiresLogin, studyController.getLocation);
+router.get('/lab/:lab', requiresLogin, studyController.getLab);
+router.get('/researcher/:researcher', requiresLogin, studyController.getResearcher);
 module.exports = router;
 ```
 Connect Study routes to apporpriate study controller
@@ -385,12 +387,9 @@ the function requiresLogin runs before the study endpoints are called to ensure 
 ## Study model
 
 ```javascript
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-
 let StudySchema = new Schema({
-    name: {type: String, required: [true, 'must enter a name'], maxlength: 30},
-    details: {type: Number, required: true, maxlength:300},
+    name: {type: String, required: [true, 'Must enter a name'], maxlength: 30},
+    details: {type: Number, required: true, maxlength:300}, //TODO add better  error messages
     lab: {type: Number, required: true, maxlength:100},
     contactInfo: {type: String, required: true, maxlength: 30},
     location: {type: String, required: true, maxlength:100},
@@ -398,7 +397,8 @@ let StudySchema = new Schema({
     criteria: {type:String, required: true, maxlength: 100},
     expectation: {type:String, required: true, maxlength: 100},
     email: {type:String, required: true, maxlength: 100},
-    researcher: {type:String, required: true}
+    researcher: {type:String, required: true},
+    ethicsClearace: {contentType:String, data:Buffer},//for uploading the ethics clearance file
 });
 
 module.exports = mongoose.model('Study', StudySchema, "Study");
@@ -419,6 +419,12 @@ For more information about mongoose schemas [go here](https://mongoosejs.com/doc
 const Study = require('../models/study.model');
 
 exports.studyCreate = function (req, res) {
+    reser = db.get().collection("User").findOne({_id : req.session.userId}, function(err){
+        if (err) return(err,500);
+        else if (reser.usertyepe != "researcher"){
+            return new error("Only researcher can create studies", 405)
+        }
+    });
     let study = new Study(
         {
             name: req.body.name,
@@ -429,21 +435,27 @@ exports.studyCreate = function (req, res) {
             compensation:  req.body.compensation,
             criteria:  req.body.criteria,
             expectation:  req.body.expectation,
-            email:  req.body.email,
-            researcher: req.body.researcher, //TODO change this to automatically get researcher's name from login information
-        },//add error if user is not a researcher
-        //user input not sanatised
-    )
+            email:  reser.email,
+            researcher: reser.name,
+        })
+        study.ethicsClearance.data = fs.readFileSync(req.body.path);
+        study.ethicsClearance.contentType = req.body.path.split('.').pop();;
+
+        //user input not sanatised?
         study.save(function(err){
             if(err){
                 console.log(err,500)
             } else{
-                res.send("researcher created successfully")
+                res.send("study created successfully")
             }
         })
 };
 ```
 Creates a study according to the [study model](#study-model) and saves it to the studies collection of the database.
+
+The email and the name of the researcher is taken from the login information and the field "ethicsClearance" stores a file for the proof of ethics clearance
+
+This enpoint is also used to update a study, all fields can be changes except the researcher email and name (unless these are fist changed in the user object)
 
 This endpoint can be accessed through
 
@@ -489,9 +501,36 @@ accessible by
 
 ```javascript
 
+exports.getEthics = function (req,res) {
+    db.get().collection("Study").findOne({_id :ObjectId(req.params.id)}, function(err,study){
+        if (err) console.log(err,500);
+        else{
+            res.contentType(study.ethicsClearance.contentType);
+            res.json(study.ethicsClearance.data);
+        }
+    })
+};
+
+exports.getId = function (req,res) {
+    db.get().collection("Study").findOne({_id:ObjectId(req.params.id)}, function(err,study){
+        if (err) console.log(err,500);
+        else{
+            res.send(study);
+        }
+    })
+};
+
+exports.studyGet = function (req, res) {
+    db.get().collection("Study").find({}).toArray(function(err, result) {
+        if (err) console.log(err,500);
+        res.send(result);
+    });
+    //returns all studies, queries needed for returning only studies with certain attributes
+};
+
 //name
 exports.getName = function (req, res) {
-    db.get().collection("Study").find({name:req.param.id}).toArray(function(err, result) {
+    db.get().collection("Study").find({name:req.params.name}).toArray(function(err, result) {
         if (err) console.log(err,500);
         else{
             res.send(result.length + " studies have this name\n" + result);
@@ -502,7 +541,7 @@ exports.getName = function (req, res) {
 
 //location
 exports.getLocation = function (req, res) {
-    db.get().collection("Study").collection('Studies').find({location:req.param.location}).toArray(function(err, result) {
+    db.get().collection("Study").collection('Studies').find({location:req.params.location}).toArray(function(err, result) {
         if (err) console.log(err,500);
         else{
             res.send(result.length + " studies in this location\n" + result);
@@ -513,18 +552,18 @@ exports.getLocation = function (req, res) {
 
 //lab
 exports.getLab = function (req, res) {
-    db.get().collection("Study").db("ResearchDB").collection('Studies').find({lab:req.param.lab}).toArray(function(err, result) {
+    db.get().collection("Study").db("ResearchDB").collection('Studies').find({lab:req.params.lab}).toArray(function(err, result) {
         if (err) console.log(err,500);
         else{
             res.send(result.length + " studies executed in this lab\n" + result);
         }
     });
-    //lists the number of studies with the specified location and returns list of studies with this name
+    //lists the number of studies with the specified locaation and returns list of studies with this name
 };
 
 //researcher
 exports.getResearcher = function (req, res) {
-    db.get().collection("Study").db("ResearchDB").collection('Studies').find({researcher:req.param.researcher}).toArray(function(err, result) {
+    db.get().collection("Study").db("ResearchDB").collection('Studies').find({researcher:req.params.researcher}).toArray(function(err, result) {
         if (err) console.log(err,500);
         else{
             res.send(result.length + " studies conducted by " + researcher + "\n" + result);
@@ -534,12 +573,21 @@ exports.getResearcher = function (req, res) {
 };
 ```
 
-These endpoints return studies by name, location, lab, and researcher.
-These studies are returned in a json containging an array of studies in the same format at the endpoint above and returns all studies.
+These endpoints return studies by id, name, location, lab, and researcher, as well as one endpoint to return the proof of ethics clearance for the study matching an id specified.
+
+These studies are returned in a json containging an array of studies in the same format at the endpoint above.
+
+endpoint | returns
+--------------------- | ---------
+* https://research-stream.herokuapp.com/study/id:<someID>/EthicsClearance | returns the proof of ethics clearance for a study with a specific id
+* https://research-stream.herokuapp.com/study/id:<someID> | returns a study by a specific ID (should only be one)
+* https://research-stream.herokuapp.com/study/name:<someName> | returns all studies under a certain name
+* https://research-stream.herokuapp.com/study/location:<someLocation> | returns all studies in a specific location
+* https://research-stream.herokuapp.com/study/lab:<someLab> | returns all studies performaed in a specific lab
+* https://research-stream.herokuapp.com/study/researcher:<somereRearcher> | returns all studies created by a specific researcher
 
 # TODO
 
 1. Messageing endpoint documentation
-2. Endpoint to get only some studies
 3. calander intergration
 4. fix error messages to be more consistent and helpful
