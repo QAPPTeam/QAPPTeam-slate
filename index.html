@@ -653,21 +653,20 @@ The login endpoint saves a user&#39;s unique ID to a session state to that it ca
 <span class="c1">// post endpoint to add study to database</span>
 <span class="nx">router</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">'/create'</span><span class="p">,</span> <span class="nx">requiresLogin</span><span class="p">,</span> <span class="nx">studyController</span><span class="p">.</span><span class="nx">studyCreate</span><span class="p">);</span>
 <span class="nx">router</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'/get'</span><span class="p">,</span> <span class="nx">requiresLogin</span><span class="p">,</span> <span class="nx">studyController</span><span class="p">.</span><span class="nx">studyGet</span><span class="p">);</span>
-<span class="nx">router</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'/:name'</span><span class="p">,</span> <span class="nx">requiresLogin</span><span class="p">,</span> <span class="nx">studyController</span><span class="p">.</span><span class="nx">getName</span><span class="p">);</span>
-<span class="nx">router</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'/:location'</span><span class="p">,</span> <span class="nx">requiresLogin</span><span class="p">,</span> <span class="nx">studyController</span><span class="p">.</span><span class="nx">getLocation</span><span class="p">);</span>
-<span class="nx">router</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'/:lab'</span><span class="p">,</span> <span class="nx">requiresLogin</span><span class="p">,</span> <span class="nx">studyController</span><span class="p">.</span><span class="nx">getLab</span><span class="p">);</span>
-<span class="nx">router</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'/:researcher'</span><span class="p">,</span> <span class="nx">requiresLogin</span><span class="p">,</span> <span class="nx">studyController</span><span class="p">.</span><span class="nx">getResearcher</span><span class="p">);</span>
+<span class="nx">router</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'/:id/EthicsClearance'</span><span class="p">,</span> <span class="nx">requiresLogin</span><span class="p">,</span> <span class="nx">studyController</span><span class="p">.</span><span class="nx">getEthics</span><span class="p">);</span>
+<span class="nx">router</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'/id/:id'</span><span class="p">,</span> <span class="nx">requiresLogin</span><span class="p">,</span> <span class="nx">studyController</span><span class="p">.</span><span class="nx">getId</span><span class="p">);</span>
+<span class="nx">router</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'/name/:name'</span><span class="p">,</span> <span class="nx">requiresLogin</span><span class="p">,</span> <span class="nx">studyController</span><span class="p">.</span><span class="nx">getName</span><span class="p">);</span>
+<span class="nx">router</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'/location/:location'</span><span class="p">,</span> <span class="nx">requiresLogin</span><span class="p">,</span> <span class="nx">studyController</span><span class="p">.</span><span class="nx">getLocation</span><span class="p">);</span>
+<span class="nx">router</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'/lab/:lab'</span><span class="p">,</span> <span class="nx">requiresLogin</span><span class="p">,</span> <span class="nx">studyController</span><span class="p">.</span><span class="nx">getLab</span><span class="p">);</span>
+<span class="nx">router</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'/researcher/:researcher'</span><span class="p">,</span> <span class="nx">requiresLogin</span><span class="p">,</span> <span class="nx">studyController</span><span class="p">.</span><span class="nx">getResearcher</span><span class="p">);</span>
 <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">router</span><span class="p">;</span>
 </code></pre>
 <p>Connect Study routes to apporpriate study controller</p>
 
 <p>the function requiresLogin runs before the study endpoints are called to ensure that a user is logged in</p>
-<h2 id='study-model'>Study model</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">mongoose</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'mongoose'</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">Schema</span> <span class="o">=</span> <span class="nx">mongoose</span><span class="p">.</span><span class="nx">Schema</span><span class="p">;</span>
-
-<span class="kd">let</span> <span class="nx">StudySchema</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Schema</span><span class="p">({</span>
-    <span class="na">name</span><span class="p">:</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="nb">String</span><span class="p">,</span> <span class="na">required</span><span class="p">:</span> <span class="p">[</span><span class="kc">true</span><span class="p">,</span> <span class="s1">'must enter a name'</span><span class="p">],</span> <span class="na">maxlength</span><span class="p">:</span> <span class="mi">30</span><span class="p">},</span>
-    <span class="na">details</span><span class="p">:</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="nb">Number</span><span class="p">,</span> <span class="na">required</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="na">maxlength</span><span class="p">:</span><span class="mi">300</span><span class="p">},</span>
+<h2 id='study-model'>Study model</h2><pre class="highlight javascript tab-javascript"><code><span class="kd">let</span> <span class="nx">StudySchema</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Schema</span><span class="p">({</span>
+    <span class="na">name</span><span class="p">:</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="nb">String</span><span class="p">,</span> <span class="na">required</span><span class="p">:</span> <span class="p">[</span><span class="kc">true</span><span class="p">,</span> <span class="s1">'Must enter a name'</span><span class="p">],</span> <span class="na">maxlength</span><span class="p">:</span> <span class="mi">30</span><span class="p">},</span>
+    <span class="na">details</span><span class="p">:</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="nb">Number</span><span class="p">,</span> <span class="na">required</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="na">maxlength</span><span class="p">:</span><span class="mi">300</span><span class="p">},</span> <span class="c1">//TODO add better  error messages</span>
     <span class="na">lab</span><span class="p">:</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="nb">Number</span><span class="p">,</span> <span class="na">required</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="na">maxlength</span><span class="p">:</span><span class="mi">100</span><span class="p">},</span>
     <span class="na">contactInfo</span><span class="p">:</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="nb">String</span><span class="p">,</span> <span class="na">required</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="na">maxlength</span><span class="p">:</span> <span class="mi">30</span><span class="p">},</span>
     <span class="na">location</span><span class="p">:</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="nb">String</span><span class="p">,</span> <span class="na">required</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="na">maxlength</span><span class="p">:</span><span class="mi">100</span><span class="p">},</span>
@@ -675,7 +674,8 @@ The login endpoint saves a user&#39;s unique ID to a session state to that it ca
     <span class="na">criteria</span><span class="p">:</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span><span class="nb">String</span><span class="p">,</span> <span class="na">required</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="na">maxlength</span><span class="p">:</span> <span class="mi">100</span><span class="p">},</span>
     <span class="na">expectation</span><span class="p">:</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span><span class="nb">String</span><span class="p">,</span> <span class="na">required</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="na">maxlength</span><span class="p">:</span> <span class="mi">100</span><span class="p">},</span>
     <span class="na">email</span><span class="p">:</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span><span class="nb">String</span><span class="p">,</span> <span class="na">required</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="na">maxlength</span><span class="p">:</span> <span class="mi">100</span><span class="p">},</span>
-    <span class="na">researcher</span><span class="p">:</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span><span class="nb">String</span><span class="p">,</span> <span class="na">required</span><span class="p">:</span> <span class="kc">true</span><span class="p">}</span>
+    <span class="na">researcher</span><span class="p">:</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span><span class="nb">String</span><span class="p">,</span> <span class="na">required</span><span class="p">:</span> <span class="kc">true</span><span class="p">},</span>
+    <span class="na">ethicsClearace</span><span class="p">:</span> <span class="p">{</span><span class="na">contentType</span><span class="p">:</span><span class="nb">String</span><span class="p">,</span> <span class="na">data</span><span class="p">:</span><span class="nx">Buffer</span><span class="p">},</span><span class="c1">//for uploading the ethics clearance file</span>
 <span class="p">});</span>
 
 <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">mongoose</span><span class="p">.</span><span class="nx">model</span><span class="p">(</span><span class="s1">'Study'</span><span class="p">,</span> <span class="nx">StudySchema</span><span class="p">,</span> <span class="s2">"Study"</span><span class="p">);</span>
@@ -710,6 +710,12 @@ The login endpoint saves a user&#39;s unique ID to a session state to that it ca
 <h2 id='create-studies'>Create studies</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">Study</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'../models/study.model'</span><span class="p">);</span>
 
 <span class="nx">exports</span><span class="p">.</span><span class="nx">studyCreate</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">reser</span> <span class="o">=</span> <span class="nx">db</span><span class="p">.</span><span class="nx">get</span><span class="p">().</span><span class="nx">collection</span><span class="p">(</span><span class="s2">"User"</span><span class="p">).</span><span class="nx">findOne</span><span class="p">({</span><span class="na">_id</span> <span class="p">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">userId</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">return</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="mi">500</span><span class="p">);</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">reser</span><span class="p">.</span><span class="nx">usertyepe</span> <span class="o">!=</span> <span class="s2">"researcher"</span><span class="p">){</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nx">error</span><span class="p">(</span><span class="s2">"Only researcher can create studies"</span><span class="p">,</span> <span class="mi">405</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
     <span class="kd">let</span> <span class="nx">study</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Study</span><span class="p">(</span>
         <span class="p">{</span>
             <span class="na">name</span><span class="p">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
@@ -720,21 +726,27 @@ The login endpoint saves a user&#39;s unique ID to a session state to that it ca
             <span class="na">compensation</span><span class="p">:</span>  <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">compensation</span><span class="p">,</span>
             <span class="na">criteria</span><span class="p">:</span>  <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">criteria</span><span class="p">,</span>
             <span class="na">expectation</span><span class="p">:</span>  <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">expectation</span><span class="p">,</span>
-            <span class="na">email</span><span class="p">:</span>  <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">email</span><span class="p">,</span>
-            <span class="na">researcher</span><span class="p">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">researcher</span><span class="p">,</span> <span class="c1">//TODO change this to automatically get researcher's name from login information</span>
-        <span class="p">},</span><span class="c1">//add error if user is not a researcher</span>
-        <span class="c1">//user input not sanatised</span>
-    <span class="p">)</span>
+            <span class="na">email</span><span class="p">:</span>  <span class="nx">reser</span><span class="p">.</span><span class="nx">email</span><span class="p">,</span>
+            <span class="na">researcher</span><span class="p">:</span> <span class="nx">reser</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
+        <span class="p">})</span>
+        <span class="nx">study</span><span class="p">.</span><span class="nx">ethicsClearance</span><span class="p">.</span><span class="nx">data</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">path</span><span class="p">);</span>
+        <span class="nx">study</span><span class="p">.</span><span class="nx">ethicsClearance</span><span class="p">.</span><span class="nx">contentType</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">path</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">'.'</span><span class="p">).</span><span class="nx">pop</span><span class="p">();;</span>
+
+        <span class="c1">//user input not sanatised?</span>
         <span class="nx">study</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span>
             <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span>
                 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="mi">500</span><span class="p">)</span>
             <span class="p">}</span> <span class="k">else</span><span class="p">{</span>
-                <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s2">"researcher created successfully"</span><span class="p">)</span>
+                <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s2">"study created successfully"</span><span class="p">)</span>
             <span class="p">}</span>
         <span class="p">})</span>
 <span class="p">};</span>
 </code></pre>
 <p>Creates a study according to the <a href="#study-model">study model</a> and saves it to the studies collection of the database.</p>
+
+<p>The email and the name of the researcher is taken from the login information and the field &quot;ethicsClearance&quot; stores a file for the proof of ethics clearance</p>
+
+<p>This enpoint is also used to update a study, all fields can be changes except the researcher email and name (unless these are fist changed in the user object)</p>
 
 <p>This endpoint can be accessed through</p>
 
@@ -775,9 +787,36 @@ The endpoints for returning only some studies depending on certain attributes</p
 <li>https://research-stream.herokuapp.com/study/get</li>
 </ul>
 <h2 id='get-some-studies'>get some studies</h2><pre class="highlight javascript tab-javascript"><code>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">getEthics</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">db</span><span class="p">.</span><span class="nx">get</span><span class="p">().</span><span class="nx">collection</span><span class="p">(</span><span class="s2">"Study"</span><span class="p">).</span><span class="nx">findOne</span><span class="p">({</span><span class="na">_id</span> <span class="p">:</span><span class="nx">ObjectId</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">)},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="nx">study</span><span class="p">){</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="mi">500</span><span class="p">);</span>
+        <span class="k">else</span><span class="p">{</span>
+            <span class="nx">res</span><span class="p">.</span><span class="nx">contentType</span><span class="p">(</span><span class="nx">study</span><span class="p">.</span><span class="nx">ethicsClearance</span><span class="p">.</span><span class="nx">contentType</span><span class="p">);</span>
+            <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="nx">study</span><span class="p">.</span><span class="nx">ethicsClearance</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">})</span>
+<span class="p">};</span>
+
+<span class="nx">exports</span><span class="p">.</span><span class="nx">getId</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">db</span><span class="p">.</span><span class="nx">get</span><span class="p">().</span><span class="nx">collection</span><span class="p">(</span><span class="s2">"Study"</span><span class="p">).</span><span class="nx">findOne</span><span class="p">({</span><span class="na">_id</span><span class="p">:</span><span class="nx">ObjectId</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">)},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="nx">study</span><span class="p">){</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="mi">500</span><span class="p">);</span>
+        <span class="k">else</span><span class="p">{</span>
+            <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">study</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">})</span>
+<span class="p">};</span>
+
+<span class="nx">exports</span><span class="p">.</span><span class="nx">studyGet</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">db</span><span class="p">.</span><span class="nx">get</span><span class="p">().</span><span class="nx">collection</span><span class="p">(</span><span class="s2">"Study"</span><span class="p">).</span><span class="nx">find</span><span class="p">({}).</span><span class="nx">toArray</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="mi">500</span><span class="p">);</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+    <span class="p">});</span>
+    <span class="c1">//returns all studies, queries needed for returning only studies with certain attributes</span>
+<span class="p">};</span>
+
 <span class="c1">//name</span>
 <span class="nx">exports</span><span class="p">.</span><span class="nx">getName</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">db</span><span class="p">.</span><span class="nx">get</span><span class="p">().</span><span class="nx">collection</span><span class="p">(</span><span class="s2">"Study"</span><span class="p">).</span><span class="nx">find</span><span class="p">({</span><span class="na">name</span><span class="p">:</span><span class="nx">req</span><span class="p">.</span><span class="nx">param</span><span class="p">.</span><span class="nx">id</span><span class="p">}).</span><span class="nx">toArray</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">db</span><span class="p">.</span><span class="nx">get</span><span class="p">().</span><span class="nx">collection</span><span class="p">(</span><span class="s2">"Study"</span><span class="p">).</span><span class="nx">find</span><span class="p">({</span><span class="na">name</span><span class="p">:</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">name</span><span class="p">}).</span><span class="nx">toArray</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="mi">500</span><span class="p">);</span>
         <span class="k">else</span><span class="p">{</span>
             <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">length</span> <span class="o">+</span> <span class="s2">" studies have this name\n"</span> <span class="o">+</span> <span class="nx">result</span><span class="p">);</span>
@@ -788,7 +827,7 @@ The endpoints for returning only some studies depending on certain attributes</p
 
 <span class="c1">//location</span>
 <span class="nx">exports</span><span class="p">.</span><span class="nx">getLocation</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">db</span><span class="p">.</span><span class="nx">get</span><span class="p">().</span><span class="nx">collection</span><span class="p">(</span><span class="s2">"Study"</span><span class="p">).</span><span class="nx">collection</span><span class="p">(</span><span class="s1">'Studies'</span><span class="p">).</span><span class="nx">find</span><span class="p">({</span><span class="na">location</span><span class="p">:</span><span class="nx">req</span><span class="p">.</span><span class="nx">param</span><span class="p">.</span><span class="nx">location</span><span class="p">}).</span><span class="nx">toArray</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">db</span><span class="p">.</span><span class="nx">get</span><span class="p">().</span><span class="nx">collection</span><span class="p">(</span><span class="s2">"Study"</span><span class="p">).</span><span class="nx">collection</span><span class="p">(</span><span class="s1">'Studies'</span><span class="p">).</span><span class="nx">find</span><span class="p">({</span><span class="na">location</span><span class="p">:</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">location</span><span class="p">}).</span><span class="nx">toArray</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="mi">500</span><span class="p">);</span>
         <span class="k">else</span><span class="p">{</span>
             <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">length</span> <span class="o">+</span> <span class="s2">" studies in this location\n"</span> <span class="o">+</span> <span class="nx">result</span><span class="p">);</span>
@@ -799,18 +838,18 @@ The endpoints for returning only some studies depending on certain attributes</p
 
 <span class="c1">//lab</span>
 <span class="nx">exports</span><span class="p">.</span><span class="nx">getLab</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">db</span><span class="p">.</span><span class="nx">get</span><span class="p">().</span><span class="nx">collection</span><span class="p">(</span><span class="s2">"Study"</span><span class="p">).</span><span class="nx">db</span><span class="p">(</span><span class="s2">"ResearchDB"</span><span class="p">).</span><span class="nx">collection</span><span class="p">(</span><span class="s1">'Studies'</span><span class="p">).</span><span class="nx">find</span><span class="p">({</span><span class="na">lab</span><span class="p">:</span><span class="nx">req</span><span class="p">.</span><span class="nx">param</span><span class="p">.</span><span class="nx">lab</span><span class="p">}).</span><span class="nx">toArray</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">db</span><span class="p">.</span><span class="nx">get</span><span class="p">().</span><span class="nx">collection</span><span class="p">(</span><span class="s2">"Study"</span><span class="p">).</span><span class="nx">db</span><span class="p">(</span><span class="s2">"ResearchDB"</span><span class="p">).</span><span class="nx">collection</span><span class="p">(</span><span class="s1">'Studies'</span><span class="p">).</span><span class="nx">find</span><span class="p">({</span><span class="na">lab</span><span class="p">:</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">lab</span><span class="p">}).</span><span class="nx">toArray</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="mi">500</span><span class="p">);</span>
         <span class="k">else</span><span class="p">{</span>
             <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">length</span> <span class="o">+</span> <span class="s2">" studies executed in this lab\n"</span> <span class="o">+</span> <span class="nx">result</span><span class="p">);</span>
         <span class="p">}</span>
     <span class="p">});</span>
-    <span class="c1">//lists the number of studies with the specified location and returns list of studies with this name</span>
+    <span class="c1">//lists the number of studies with the specified locaation and returns list of studies with this name</span>
 <span class="p">};</span>
 
 <span class="c1">//researcher</span>
 <span class="nx">exports</span><span class="p">.</span><span class="nx">getResearcher</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">db</span><span class="p">.</span><span class="nx">get</span><span class="p">().</span><span class="nx">collection</span><span class="p">(</span><span class="s2">"Study"</span><span class="p">).</span><span class="nx">db</span><span class="p">(</span><span class="s2">"ResearchDB"</span><span class="p">).</span><span class="nx">collection</span><span class="p">(</span><span class="s1">'Studies'</span><span class="p">).</span><span class="nx">find</span><span class="p">({</span><span class="na">researcher</span><span class="p">:</span><span class="nx">req</span><span class="p">.</span><span class="nx">param</span><span class="p">.</span><span class="nx">researcher</span><span class="p">}).</span><span class="nx">toArray</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">db</span><span class="p">.</span><span class="nx">get</span><span class="p">().</span><span class="nx">collection</span><span class="p">(</span><span class="s2">"Study"</span><span class="p">).</span><span class="nx">db</span><span class="p">(</span><span class="s2">"ResearchDB"</span><span class="p">).</span><span class="nx">collection</span><span class="p">(</span><span class="s1">'Studies'</span><span class="p">).</span><span class="nx">find</span><span class="p">({</span><span class="na">researcher</span><span class="p">:</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">researcher</span><span class="p">}).</span><span class="nx">toArray</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="mi">500</span><span class="p">);</span>
         <span class="k">else</span><span class="p">{</span>
             <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">length</span> <span class="o">+</span> <span class="s2">" studies conducted by "</span> <span class="o">+</span> <span class="nx">researcher</span> <span class="o">+</span> <span class="s2">"\n"</span> <span class="o">+</span> <span class="nx">result</span><span class="p">);</span>
@@ -819,12 +858,44 @@ The endpoints for returning only some studies depending on certain attributes</p
     <span class="c1">//lists the number of studies with the specified locaation and returns list of studies with this name</span>
 <span class="p">};</span>
 </code></pre>
-<p>These endpoints return studies by name, location, lab, and researcher.
-These studies are returned in a json containging an array of studies in the same format at the endpoint above and returns all studies.</p>
+<p>These endpoints return studies by id, name, location, lab, and researcher, as well as one endpoint to return the proof of ethics clearance for the study matching an id specified.</p>
+
+<p>These studies are returned in a json containging an array of studies in the same format at the endpoint above.</p>
+
+<table><thead>
+<tr>
+<th>endpoint</th>
+<th>returns</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>* https://research-stream.herokuapp.com/study/id:<someID>/EthicsClearance</td>
+<td>returns the proof of ethics clearance for a study with a specific id</td>
+</tr>
+<tr>
+<td>* https://research-stream.herokuapp.com/study/id:<someID></td>
+<td>returns a study by a specific ID (should only be one)</td>
+</tr>
+<tr>
+<td>* https://research-stream.herokuapp.com/study/name:<someName></td>
+<td>returns all studies under a certain name</td>
+</tr>
+<tr>
+<td>* https://research-stream.herokuapp.com/study/location:<someLocation></td>
+<td>returns all studies in a specific location</td>
+</tr>
+<tr>
+<td>* https://research-stream.herokuapp.com/study/lab:<someLab></td>
+<td>returns all studies performaed in a specific lab</td>
+</tr>
+<tr>
+<td>* https://research-stream.herokuapp.com/study/researcher:<somereRearcher></td>
+<td>returns all studies created by a specific researcher</td>
+</tr>
+</tbody></table>
 <h1 id='todo'>TODO</h1>
 <ol>
 <li>Messageing endpoint documentation</li>
-<li>Endpoint to get only some studies</li>
 <li>calander intergration</li>
 <li>fix error messages to be more consistent and helpful</li>
 </ol>
