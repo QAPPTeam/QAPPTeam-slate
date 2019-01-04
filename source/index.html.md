@@ -340,8 +340,24 @@ HTTP request | returns
 * a lab
 * a researcher
 
+
+# Messageing system instruction
+## files
+1. dump_from_server.js
+2. send_msg.js
+3. index.js
+4. encryption.js
+
+## how to use it
+1. when user open the chat page, set up the user and chatroom
+2. add this code in the webpage to trigger socket.io
+3. dump_from_server.dump will return the chat history, need to insert it into the web page. 
+4. encryption haven't been tested yet
+
+
+
 # TODO
 
-1. Messageing endpoint documentation
+1. ~~~Messageing endpoint documentation~~~
 3. calander intergration
 4. fix error messages to be more consistent and helpful
