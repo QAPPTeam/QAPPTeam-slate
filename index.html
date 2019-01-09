@@ -234,10 +234,16 @@
                     <a href="#login-endpoint" class="toc-h2 toc-link" data-title="Login endpoint">Login endpoint</a>
                   </li>
                   <li>
+                    <a href="#logout-endpoint" class="toc-h2 toc-link" data-title="logout endpoint">logout endpoint</a>
+                  </li>
+                  <li>
                     <a href="#user-update-endpoint" class="toc-h2 toc-link" data-title="User Update Endpoint">User Update Endpoint</a>
                   </li>
                   <li>
                     <a href="#researcher-participant" class="toc-h2 toc-link" data-title="researcher | participant">researcher | participant</a>
+                  </li>
+                  <li>
+                    <a href="#participant-signs-up-for-a-study" class="toc-h2 toc-link" data-title="participant signs up for a study">participant signs up for a study</a>
                   </li>
               </ul>
           </li>
@@ -252,6 +258,17 @@
                   </li>
                   <li>
                     <a href="#get-studies-by-other-parameters" class="toc-h2 toc-link" data-title="get studies by other parameters">get studies by other parameters</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#messageing-system-instruction" class="toc-h1 toc-link" data-title="Messageing system instruction">Messageing system instruction</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#files" class="toc-h2 toc-link" data-title="files">files</a>
+                  </li>
+                  <li>
+                    <a href="#how-to-use-it" class="toc-h2 toc-link" data-title="how to use it">how to use it</a>
                   </li>
               </ul>
           </li>
@@ -365,7 +382,6 @@
                 <span class="s2">"password"</span><span class="p">:</span> <span class="s2">"a password"</span><span class="p">,</span>
 <span class="p">}</span>
 
-<span class="c1">//this code registers a researcher</span>
 <span class="kd">var</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">fetch</span><span class="p">(</span><span class="s1">'https://research-stream.herokuapp.com/user/login '</span><span class="p">,</span> <span class="p">{</span>
         <span class="na">method</span><span class="p">:</span> <span class="s2">"POST"</span>
         <span class="na">body</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">),</span>
@@ -389,6 +405,16 @@ All the endpoints following this one require the login endpoint to be run first<
 <li>email</li>
 <li>password</li>
 </ul>
+<h2 id='logout-endpoint'>logout endpoint</h2><pre class="highlight javascript tab-javascript"><code>
+<span class="kd">var</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">fetch</span><span class="p">(</span><span class="s1">'https://research-stream.herokuapp.com/user/login '</span><span class="p">,</span> <span class="p">{</span>
+        <span class="na">method</span><span class="p">:</span> <span class="s2">"GET"</span><span class="p">,</span>
+    <span class="p">})</span>
+  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">response</span><span class="p">;</span>
+  <span class="p">})</span>
+
+</code></pre>
+<p>This returns a string stateting the user is logged out successfully, there are no parameters, if a user is not logged in the returned string will state this information instead</p>
 <h2 id='user-update-endpoint'>User Update Endpoint</h2>
 <blockquote>
 <p>to update a participant different data needs to be used but they are both updates using the same endpoint
@@ -413,9 +439,9 @@ var response = fetch(&#39;https://research-stream.herokuapp.com/user/update &#39
     return response.json();
   })
 ```
-This enpoint updates user information. It does this by calling the create user function which validates input and, if an object with the same id already exists, performes an update action instead of a create action</p>
+This enpoint updates user information. An array of all the user information (wether its being updated or not) is sent to this endpoint, and it will change the information of the user that is already logged in.</p>
 
-<p>this endpoint returns a json of the updated user information</p>
+<p>this endpoint returns a success message if the update was successfull</p>
 
 <p>HTTP request</p>
 
@@ -431,6 +457,22 @@ This enpoint updates user information. It does this by calling the create user f
  phone number | password
  email
  password</p>
+<h2 id='participant-signs-up-for-a-study'>participant signs up for a study</h2><pre class="highlight javascript tab-javascript"><code><span class="kd">var</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">fetch</span><span class="p">(</span><span class="s1">'https://research-stream.herokuapp.com/user/signup/&lt;the id of a study&gt;/&lt;the date the participant is signin up for&gt; '</span><span class="p">,</span> <span class="p">{</span>
+        <span class="na">method</span><span class="p">:</span> <span class="s2">"POST"</span>
+    <span class="p">})</span>
+  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
+  <span class="p">})</span>
+</code></pre>
+<p>This is the endpoint used when a perticipant is logged in and wants to sign up for a study
+it returns a success message if the participant is signed up successfully</p>
+
+<p>a participant cannot sign up for a trial more than once and cannot sign up for a time slot thats aready been filled</p>
+<h3 id='parameters'>parameters</h3>
+<ul>
+<li>_id of the study</li>
+<li>date of the trial</li>
+</ul>
 <h1 id='studies'>Studies</h1><h2 id='create-studies'>Create studies</h2>
 <blockquote>
 <p>before accessing this endpoint, access the login enpoint with researcher credentials
@@ -444,7 +486,10 @@ let data = {
     &quot;compensation&quot;: &quot;prob money&quot;,
     &quot;criteria&quot; : &quot;a person&quot;,
     &quot;expectation&quot; : &quot;an expectation&quot;,
-    &quot;path&quot;: &quot;<a path to a file>&quot;
+    &quot;ethicsclearance&quot;: &quot;<a path to a file>&quot;,
+    &quot;emailcontent&quot;: &quot;<a path to a file>&quot;,
+    &quot;emaildateoffset&quot;: 1,
+    &quot;dates&quot;: &quot;[01.01.2018, 01.02.2018]&quot;//etc
 }</p>
 </blockquote>
 
@@ -474,6 +519,10 @@ This enpdoint is also used to update a study, all fields can be changes except t
 * compensation
 * criteria
 * expectation
+* path to ethics clearance file
+* path to txt file for e mail content?
+* number of days in advance the reminder e mail will be sent
+* an array of the dates the trials will take place
 
 
 ## get all studies
@@ -501,6 +550,10 @@ var response = fetch('https://research-stream.herokuapp.com/study/get', {
     </span><span class="s2">"expectation"</span><span class="p">:</span><span class="w">  </span><span class="s2">"expectation"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"email"</span><span class="p">:</span><span class="w">  </span><span class="s2">"somebody@somewhere.com"</span><span class="w"> </span><span class="p">,</span><span class="w">
     </span><span class="s2">"researcher"</span><span class="p">:</span><span class="w"> </span><span class="s2">"a persons name"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"ethicsclearance"</span><span class="p">:</span><span class="w"> </span><span class="s2">"buffer file data for the submitted file"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"emailcontent"</span><span class="p">:</span><span class="w"> </span><span class="s2">"buffer data for a text file containing the e mail content"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"emaildateoffset"</span><span class="p">:</span><span class="w"> </span><span class="s2">"the number of days an e mail will be sent in advance to warn a participant"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"dates"</span><span class="p">:</span><span class="w"> </span><span class="s2">"[{date:date of the trial, participant:_id of the participant, emaildate:date the warning e mail will be sent to the participant}]"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint return a list of all studies.</p>
@@ -537,7 +590,7 @@ B) the Ethics Clearance file for a study according to the study ID</p>
 <li>https://research-stream.herokuapp.com/study/id/<someID>:id</li>
 <li>https://research-stream.herokuapp.com/study/EthicsClearance/<someID>:id</li>
 </ul>
-<h3 id='parameters'>parameters</h3>
+<h3 id='parameters-2'>parameters</h3>
 <ul>
 <li>ID of an existing study (in the url)</li>
 </ul>
@@ -545,7 +598,7 @@ B) the Ethics Clearance file for a study according to the study ID</p>
 <blockquote>
 <p>before accessing any of the folloing endpoints login
 ```JavaScript
-var responseEthics = fetch(&#39;https://research-stream.herokuapp.com/study/name/<someName>&#39;, {
+var responseName = fetch(&#39;https://research-stream.herokuapp.com/study/name/<someName>&#39;, {
         method: &quot;GET&quot;
     })
   .then(function(response) {
@@ -553,21 +606,21 @@ var responseEthics = fetch(&#39;https://research-stream.herokuapp.com/study/name
   })</p>
 </blockquote>
 
-<p>var responseEthics = fetch(&#39;https://research-stream.herokuapp.com/study/location/<someLocation>&#39;, {
+<p>var responseLocation = fetch(&#39;https://research-stream.herokuapp.com/study/location/<someLocation>&#39;, {
         method: &quot;GET&quot;
     })
   .then(function(response) {
     return response.json();
   })</p>
 
-<p>var responseEthics = fetch(&#39;https://research-stream.herokuapp.com/study/lab/<some lab>&#39;, {
+<p>var responseLab = fetch(&#39;https://research-stream.herokuapp.com/study/lab/<some lab>&#39;, {
         method: &quot;GET&quot;
     })
   .then(function(response) {
     return response.json();
   })</p>
 
-<p>var responseEthics = fetch(&#39;https://research-stream.herokuapp.com/study/researcher/<some researcher>&#39;, {
+<p>var responseResearcher = fetch(&#39;https://research-stream.herokuapp.com/study/researcher/<some researcher>&#39;, {
         method: &quot;GET&quot;
     })
   .then(function(response) {
@@ -609,9 +662,25 @@ var responseEthics = fetch(&#39;https://research-stream.herokuapp.com/study/name
 <li>a lab</li>
 <li>a researcher</li>
 </ul>
+<h1 id='messageing-system-instruction'>Messageing system instruction</h1><h2 id='files'>files</h2>
+<ol>
+<li>dump_from_server.js</li>
+<li>send_msg.js</li>
+<li>index.js</li>
+<li>encryption.js</li>
+</ol>
+<h2 id='how-to-use-it'>how to use it</h2>
+<ol>
+<li>when user open the chat page, set up the user and chatroom</li>
+<li>add this code in the webpage to trigger socket.io</li>
+<li>dump_from_server.dump will return the chat history, need to insert it into the web page. </li>
+<li>encryption haven&#39;t been tested yet</li>
+</ol>
 <h1 id='todo'>TODO</h1>
 <ol>
-<li>Messageing endpoint documentation</li>
+<li>~<del>Messageing endpoint documentation</del>~</li>
+<li>when a researcher changes email or name documentation the name and email of this researcher should also change in all studies belonging to this researcher</li>
+<li>change user update so not all the parameters need to be passed every time?</li>
 <li>calander intergration</li>
 <li>fix error messages to be more consistent and helpful</li>
 </ol>
