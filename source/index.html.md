@@ -115,7 +115,6 @@ let data = {
                 "password": "a password",
 }
 
-//this code registers a researcher
 var response = fetch('https://research-stream.herokuapp.com/user/login ', {
         method: "POST"
         body: JSON.stringify(data),
@@ -137,6 +136,19 @@ Login is accessed via the endpoint
 ### login parameters
 * email
 * password
+
+## logout endpoint
+```javascript
+
+var response = fetch('https://research-stream.herokuapp.com/user/login ', {
+        method: "GET",
+    })
+  .then(function(response) {
+    return response;
+  })
+
+```
+This returns a string stateting the user is logged out successfully, there are no parameters, if a user is not logged in the returned string will state this information instead
 
 ## User Update Endpoint
 
@@ -161,9 +173,9 @@ var response = fetch('https://research-stream.herokuapp.com/user/update ', {
     return response.json();
   })
 ```
-This enpoint updates user information. It does this by calling the create user function which validates input and, if an object with the same id already exists, performes an update action instead of a create action
+This enpoint updates user information. An array of all the user information (wether its being updated or not) is sent to this endpoint, and it will change the information of the user that is already logged in.
 
-this endpoint returns a json of the updated user information
+this endpoint returns a success message if the update was successfull
 
 HTTP request
 
@@ -180,6 +192,24 @@ researcher | participant
  email
  password
 
+##participant signs up for a study
+```javascript
+var response = fetch('https://research-stream.herokuapp.com/user/signup/<the id of a study>/<the date the participant is signin up for> ', {
+        method: "POST"
+    })
+  .then(function(response) {
+    return response.json();
+  })
+```
+This is the endpoint used when a perticipant is logged in and wants to sign up for a study
+it returns a success message if the participant is signed up successfully
+
+a participant cannot sign up for a trial more than once and cannot sign up for a time slot thats aready been filled
+
+### parameters
+* _id of the study
+* date of the trial
+
 # Studies
 
 ## Create studies
@@ -194,7 +224,10 @@ let data = {
     "compensation": "prob money",
     "criteria" : "a person",
     "expectation" : "an expectation",
-    "path": "<a path to a file>"
+    "ethicsclearance": "<a path to a file>",
+    "emailcontent": "<a path to a file>",
+    "emaildateoffset": 1,
+    "dates": "[01.01.2018, 01.02.2018]"//etc
 }
 
 var response = fetch('https://research-stream.herokuapp.com/study/create ', {
@@ -225,6 +258,10 @@ This enpdoint is also used to update a study, all fields can be changes except t
 * compensation
 * criteria
 * expectation
+* path to ethics clearance file
+* path to txt file for e mail content?
+* number of days in advance the reminder e mail will be sent
+* an array of the dates the trials will take place
 
 
 ## get all studies
@@ -253,6 +290,10 @@ var response = fetch('https://research-stream.herokuapp.com/study/get', {
     "expectation":  "expectation",
     "email":  "somebody@somewhere.com" ,
     "researcher": "a persons name",
+    "ethicsclearance": "buffer file data for the submitted file",
+    "emailcontent": "buffer data for a text file containing the e mail content",
+    "emaildateoffset": "the number of days an e mail will be sent in advance to warn a participant",
+    "dates": "[{date:date of the trial, participant:_id of the participant, emaildate:date the warning e mail will be sent to the participant}]"
 }
 ```
 
@@ -294,28 +335,28 @@ B) the Ethics Clearance file for a study according to the study ID
 ## get studies by other parameters
 >before accessing any of the folloing endpoints login
 ```JavaScript
-var responseEthics = fetch('https://research-stream.herokuapp.com/study/name/<someName>', {
+var responseName = fetch('https://research-stream.herokuapp.com/study/name/<someName>', {
         method: "GET"
     })
   .then(function(response) {
     return response.json();
   })
 
-var responseEthics = fetch('https://research-stream.herokuapp.com/study/location/<someLocation>', {
+var responseLocation = fetch('https://research-stream.herokuapp.com/study/location/<someLocation>', {
         method: "GET"
     })
   .then(function(response) {
     return response.json();
   })
 
-  var responseEthics = fetch('https://research-stream.herokuapp.com/study/lab/<some lab>', {
+  var responseLab = fetch('https://research-stream.herokuapp.com/study/lab/<some lab>', {
         method: "GET"
     })
   .then(function(response) {
     return response.json();
   })
 
-  var responseEthics = fetch('https://research-stream.herokuapp.com/study/researcher/<some researcher>', {
+  var responseResearcher = fetch('https://research-stream.herokuapp.com/study/researcher/<some researcher>', {
         method: "GET"
     })
   .then(function(response) {
@@ -359,5 +400,7 @@ HTTP request | returns
 # TODO
 
 1. ~~~Messageing endpoint documentation~~~
+2. when a researcher changes email or name documentation the name and email of this researcher should also change in all studies belonging to this researcher
+3. change user update so not all the parameters need to be passed every time?
 3. calander intergration
 4. fix error messages to be more consistent and helpful
