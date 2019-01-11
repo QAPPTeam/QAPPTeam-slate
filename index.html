@@ -293,7 +293,7 @@
 
 <p>This example API documentation page was created with <a href="https://github.com/lord/slate">Slate</a>.</p>
 <h1 id='users'>Users</h1><h2 id='signup-endpoints-researcher'>Signup endpoints -- researcher</h2><pre class="highlight javascript tab-javascript"><code>
-<span class="kd">let</span> <span class="nx">dataResearcher</span> <span class="o">=</span> <span class="p">{</span> 
+<span class="kd">let</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span> 
                 <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"aname"</span><span class="p">,</span>
                 <span class="s2">"institution"</span><span class="p">:</span> <span class="s2">"an institution"</span><span class="p">,</span>
                 <span class="s2">"department"</span><span class="p">:</span> <span class="s2">"department"</span><span class="p">,</span>
@@ -306,9 +306,12 @@
 
 <span class="c1">//this code registers a researcher</span>
 <span class="kd">var</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">fetch</span><span class="p">(</span><span class="s1">'https://research-stream.herokuapp.com/user/registerResearcher '</span><span class="p">,</span> <span class="p">{</span>
-        <span class="na">method</span><span class="p">:</span> <span class="s2">"POST"</span>
-        <span class="na">body</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">dataResearcher</span><span class="p">),</span>
-    <span class="p">})</span>
+    <span class="na">method</span><span class="p">:</span> <span class="s2">"POST"</span><span class="p">,</span>
+    <span class="na">headers</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"Content-Type"</span><span class="p">:</span> <span class="s2">"application/json"</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="na">body</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">),</span>
+<span class="p">})</span>
   <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
   <span class="p">})</span>
@@ -337,7 +340,7 @@
 <li>password</li>
 </ul>
 <h2 id='signup-endpoints-researcher-2'>Signup endpoints -- researcher</h2><pre class="highlight javascript tab-javascript"><code>
-<span class="kd">let</span> <span class="nx">dataResearcher</span> <span class="o">=</span> <span class="p">{</span> 
+<span class="kd">let</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span> 
                 <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"aname"</span><span class="p">,</span>
                 <span class="s2">"age"</span><span class="p">:</span> <span class="s2">"a number"</span><span class="p">,</span>
                 <span class="s2">"city"</span><span class="p">:</span> <span class="s2">"a city"</span><span class="p">,</span>
@@ -348,9 +351,12 @@
 
 <span class="c1">//this code registers a researcher</span>
 <span class="kd">var</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">fetch</span><span class="p">(</span><span class="s1">'https://research-stream.herokuapp.com/user/registerParticipant '</span><span class="p">,</span> <span class="p">{</span>
-        <span class="na">method</span><span class="p">:</span> <span class="s2">"POST"</span>
-        <span class="na">body</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">dataResearcher</span><span class="p">),</span>
-    <span class="p">})</span>
+    <span class="na">method</span><span class="p">:</span> <span class="s2">"POST"</span><span class="p">,</span>
+    <span class="na">headers</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"Content-Type"</span><span class="p">:</span> <span class="s2">"application/json"</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="na">body</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">),</span>
+<span class="p">})</span>
   <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
   <span class="p">})</span>
@@ -377,18 +383,22 @@
 <li>password</li>
 </ul>
 <h2 id='login-endpoint'>Login endpoint</h2><pre class="highlight javascript tab-javascript"><code>
-<span class="kd">let</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span> 
-                <span class="s2">"email"</span><span class="p">:</span> <span class="s2">"an email"</span><span class="p">,</span>
-                <span class="s2">"password"</span><span class="p">:</span> <span class="s2">"a password"</span><span class="p">,</span>
+<span class="kd">let</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"email"</span><span class="p">:</span><span class="s2">"sppedster2@gmail.com"</span><span class="p">,</span>
+    <span class="s2">"password"</span><span class="p">:</span><span class="s2">"password"</span>
 <span class="p">}</span>
 
-<span class="kd">var</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">fetch</span><span class="p">(</span><span class="s1">'https://research-stream.herokuapp.com/user/login '</span><span class="p">,</span> <span class="p">{</span>
-        <span class="na">method</span><span class="p">:</span> <span class="s2">"POST"</span>
-        <span class="na">body</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">),</span>
-    <span class="p">})</span>
-  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">var</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">fetch</span><span class="p">(</span><span class="s1">'http://localhost:5000/user/login '</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">method</span><span class="p">:</span> <span class="s2">"POST"</span><span class="p">,</span>
+    <span class="na">headers</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"Content-Type"</span><span class="p">:</span> <span class="s2">"application/json"</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="na">body</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">),</span>
+<span class="p">})</span>
+<span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span>
     <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
-  <span class="p">})</span>
+<span class="p">})</span>
 
 </code></pre>
 <p>The User is identified by a unique email
@@ -410,7 +420,7 @@ All the endpoints following this one require the login endpoint to be run first<
         <span class="na">method</span><span class="p">:</span> <span class="s2">"GET"</span><span class="p">,</span>
     <span class="p">})</span>
   <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">response</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
   <span class="p">})</span>
 
 </code></pre>
@@ -432,9 +442,12 @@ let data = {
 
 <p>//this code registers a researcher
 var response = fetch(&#39;https://research-stream.herokuapp.com/user/update &#39;, {
-        method: &quot;POST&quot;
-        body: JSON.stringify(data),
-    })
+    method: &quot;POST&quot;,
+    headers: {
+        &quot;Content-Type&quot;: &quot;application/json&quot;,
+    },
+    body: JSON.stringify(data),
+})
   .then(function(response) {
     return response.json();
   })
@@ -458,8 +471,12 @@ This enpoint updates user information. An array of all the user information (wet
  email
  password</p>
 <h2 id='participant-signs-up-for-a-study'>participant signs up for a study</h2><pre class="highlight javascript tab-javascript"><code><span class="kd">var</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">fetch</span><span class="p">(</span><span class="s1">'https://research-stream.herokuapp.com/user/signup/&lt;the id of a study&gt;/&lt;the date the participant is signin up for&gt; '</span><span class="p">,</span> <span class="p">{</span>
-        <span class="na">method</span><span class="p">:</span> <span class="s2">"POST"</span>
-    <span class="p">})</span>
+    <span class="na">method</span><span class="p">:</span> <span class="s2">"POST"</span><span class="p">,</span>
+    <span class="na">headers</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"Content-Type"</span><span class="p">:</span> <span class="s2">"application/json"</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="na">body</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">),</span>
+<span class="p">})</span>
   <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
   <span class="p">})</span>
@@ -494,9 +511,12 @@ let data = {
 </blockquote>
 
 <p>var response = fetch(&#39;https://research-stream.herokuapp.com/study/create &#39;, {
-        method: &quot;POST&quot;
-        body: JSON.stringify(data),
-    })
+    method: &quot;POST&quot;,
+    headers: {
+        &quot;Content-Type&quot;: &quot;application/json&quot;,
+    },
+    body: JSON.stringify(data),
+})
   .then(function(response) {
     return response.json();
   })</p>
@@ -567,16 +587,16 @@ var response = fetch('https://research-stream.herokuapp.com/study/get', {
 <blockquote>
 <p>the ethics clearance data of a study is stored as buffer data
 ```javascript
-var responseStudy = fetch(&#39;https://research-stream.herokuapp.com/study/<someID>:id&#39;, {
-        method: &quot;GET&quot;
+fetch(&#39;https://research-stream.herokuapp.com/study/id/<someID>:id&#39;, {
+        method: &quot;GET&quot;,
     })
   .then(function(response) {
     return response.json();
   })</p>
 </blockquote>
 
-<p>var responseEthics = fetch(&#39;https://research-stream.herokuapp.com/study/<someID>:id/EthicsClearance&#39;, {
-        method: &quot;GET&quot;
+<p>fetch(&#39;https://research-stream.herokuapp.com/study/EthicsClearance/<someID>:id&#39;, {
+        method: &quot;GET&quot;,
     })
   .then(function(response) {
     return response.json();
@@ -598,7 +618,7 @@ B) the Ethics Clearance file for a study according to the study ID</p>
 <blockquote>
 <p>before accessing any of the folloing endpoints login
 ```JavaScript
-var responseName = fetch(&#39;https://research-stream.herokuapp.com/study/name/<someName>&#39;, {
+fetch(&#39;https://research-stream.herokuapp.com/study/name/<someName>&#39;, {
         method: &quot;GET&quot;
     })
   .then(function(response) {
@@ -606,21 +626,21 @@ var responseName = fetch(&#39;https://research-stream.herokuapp.com/study/name/<
   })</p>
 </blockquote>
 
-<p>var responseLocation = fetch(&#39;https://research-stream.herokuapp.com/study/location/<someLocation>&#39;, {
+<p>fetch(&#39;https://research-stream.herokuapp.com/study/location/<someLocation>&#39;, {
         method: &quot;GET&quot;
     })
   .then(function(response) {
     return response.json();
   })</p>
 
-<p>var responseLab = fetch(&#39;https://research-stream.herokuapp.com/study/lab/<some lab>&#39;, {
+<p>fetch(&#39;https://research-stream.herokuapp.com/study/lab/<some lab>&#39;, {
         method: &quot;GET&quot;
     })
   .then(function(response) {
     return response.json();
   })</p>
 
-<p>var responseResearcher = fetch(&#39;https://research-stream.herokuapp.com/study/researcher/<some researcher>&#39;, {
+<p>fetch(&#39;https://research-stream.herokuapp.com/study/researcher/<some researcher>&#39;, {
         method: &quot;GET&quot;
     })
   .then(function(response) {
@@ -679,8 +699,6 @@ var responseName = fetch(&#39;https://research-stream.herokuapp.com/study/name/<
 <h1 id='todo'>TODO</h1>
 <ol>
 <li>~<del>Messageing endpoint documentation</del>~</li>
-<li>when a researcher changes email or name documentation the name and email of this researcher should also change in all studies belonging to this researcher</li>
-<li>change user update so not all the parameters need to be passed every time?</li>
 <li>calander intergration</li>
 <li>fix error messages to be more consistent and helpful</li>
 </ol>
