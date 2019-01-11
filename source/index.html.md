@@ -129,8 +129,8 @@ var response = fetch('http://localhost:5000/user/login ', {
     body: JSON.stringify(data),
 })
 .then(function(response) {
-    console.log(response)
-    return response.json();
+    console.log(response.text())
+    return response.text();
 })
 
 ```
