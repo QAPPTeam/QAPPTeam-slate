@@ -421,4 +421,3 @@ HTTP request | returns
 
 1. ~~~Messageing endpoint documentation~~~
 3. calander intergration
-4. fix error messages to be more consistent and helpful
