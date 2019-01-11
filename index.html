@@ -396,8 +396,8 @@
     <span class="na">body</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">),</span>
 <span class="p">})</span>
 <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span>
-    <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">text</span><span class="p">())</span>
+    <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">text</span><span class="p">();</span>
 <span class="p">})</span>
 
 </code></pre>
@@ -700,7 +700,6 @@ fetch(&#39;https://research-stream.herokuapp.com/study/name/<someName>&#39;, {
 <ol>
 <li>~<del>Messageing endpoint documentation</del>~</li>
 <li>calander intergration</li>
-<li>fix error messages to be more consistent and helpful</li>
 </ol>
 <h1 id='errors'>Errors</h1>
 <aside class="notice">
