@@ -28,7 +28,7 @@ This example API documentation page was created with [Slate](https://github.com/
 
 ```javascript
 
-let dataResearcher = { 
+let data = { 
                 "name": "aname",
                 "institution": "an institution",
                 "department": "department",
@@ -41,9 +41,12 @@ let dataResearcher = {
 
 //this code registers a researcher
 var response = fetch('https://research-stream.herokuapp.com/user/registerResearcher ', {
-        method: "POST"
-        body: JSON.stringify(dataResearcher),
-    })
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+})
   .then(function(response) {
     return response.json();
   })
@@ -71,7 +74,7 @@ HTTP request
 
 ```javascript
 
-let dataResearcher = { 
+let data = { 
                 "name": "aname",
                 "age": "a number",
                 "city": "a city",
@@ -82,9 +85,12 @@ let dataResearcher = {
 
 //this code registers a researcher
 var response = fetch('https://research-stream.herokuapp.com/user/registerParticipant ', {
-        method: "POST"
-        body: JSON.stringify(dataResearcher),
-    })
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+})
   .then(function(response) {
     return response.json();
   })
@@ -110,18 +116,22 @@ HTTP requests
 
 ```javascript
 
-let data = { 
-                "email": "an email",
-                "password": "a password",
+let data = {
+    "email":"sppedster2@gmail.com",
+    "password":"password"
 }
 
-var response = fetch('https://research-stream.herokuapp.com/user/login ', {
-        method: "POST"
-        body: JSON.stringify(data),
-    })
-  .then(function(response) {
+var response = fetch('http://localhost:5000/user/login ', {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+})
+.then(function(response) {
+    console.log(response)
     return response.json();
-  })
+})
 
 ```
 
@@ -144,7 +154,7 @@ var response = fetch('https://research-stream.herokuapp.com/user/login ', {
         method: "GET",
     })
   .then(function(response) {
-    return response;
+    return response.json();
   })
 
 ```
@@ -166,9 +176,12 @@ let data = {
 
 //this code registers a researcher
 var response = fetch('https://research-stream.herokuapp.com/user/update ', {
-        method: "POST"
-        body: JSON.stringify(data),
-    })
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+})
   .then(function(response) {
     return response.json();
   })
@@ -195,8 +208,12 @@ researcher | participant
 ##participant signs up for a study
 ```javascript
 var response = fetch('https://research-stream.herokuapp.com/user/signup/<the id of a study>/<the date the participant is signin up for> ', {
-        method: "POST"
-    })
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+})
   .then(function(response) {
     return response.json();
   })
@@ -231,9 +248,12 @@ let data = {
 }
 
 var response = fetch('https://research-stream.herokuapp.com/study/create ', {
-        method: "POST"
-        body: JSON.stringify(data),
-    })
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+})
   .then(function(response) {
     return response.json();
   })
@@ -307,15 +327,15 @@ accessible by
 
 >the ethics clearance data of a study is stored as buffer data
 ```javascript
-var responseStudy = fetch('https://research-stream.herokuapp.com/study/<someID>:id', {
-        method: "GET"
+fetch('https://research-stream.herokuapp.com/study/id/<someID>:id', {
+        method: "GET",
     })
   .then(function(response) {
     return response.json();
   })
 
-var responseEthics = fetch('https://research-stream.herokuapp.com/study/<someID>:id/EthicsClearance', {
-        method: "GET"
+fetch('https://research-stream.herokuapp.com/study/EthicsClearance/<someID>:id', {
+        method: "GET",
     })
   .then(function(response) {
     return response.json();
@@ -335,28 +355,28 @@ B) the Ethics Clearance file for a study according to the study ID
 ## get studies by other parameters
 >before accessing any of the folloing endpoints login
 ```JavaScript
-var responseName = fetch('https://research-stream.herokuapp.com/study/name/<someName>', {
+fetch('https://research-stream.herokuapp.com/study/name/<someName>', {
         method: "GET"
     })
   .then(function(response) {
     return response.json();
   })
 
-var responseLocation = fetch('https://research-stream.herokuapp.com/study/location/<someLocation>', {
+fetch('https://research-stream.herokuapp.com/study/location/<someLocation>', {
         method: "GET"
     })
   .then(function(response) {
     return response.json();
   })
 
-  var responseLab = fetch('https://research-stream.herokuapp.com/study/lab/<some lab>', {
+fetch('https://research-stream.herokuapp.com/study/lab/<some lab>', {
         method: "GET"
     })
   .then(function(response) {
     return response.json();
   })
 
-  var responseResearcher = fetch('https://research-stream.herokuapp.com/study/researcher/<some researcher>', {
+fetch('https://research-stream.herokuapp.com/study/researcher/<some researcher>', {
         method: "GET"
     })
   .then(function(response) {
@@ -400,7 +420,5 @@ HTTP request | returns
 # TODO
 
 1. ~~~Messageing endpoint documentation~~~
-2. when a researcher changes email or name documentation the name and email of this researcher should also change in all studies belonging to this researcher
-3. change user update so not all the parameters need to be passed every time?
 3. calander intergration
 4. fix error messages to be more consistent and helpful
