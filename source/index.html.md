@@ -129,7 +129,6 @@ var response = fetch('http://localhost:5000/user/login ', {
     body: JSON.stringify(data),
 })
 .then(function(response) {
-    console.log(response.text())
     return response.text();
 })
 
@@ -154,7 +153,7 @@ var response = fetch('https://research-stream.herokuapp.com/user/login ', {
         method: "GET",
     })
   .then(function(response) {
-    return response.json();
+    return response.text();
   })
 
 ```
@@ -183,7 +182,7 @@ var response = fetch('https://research-stream.herokuapp.com/user/update ', {
     body: JSON.stringify(data),
 })
   .then(function(response) {
-    return response.json();
+    return response.text();
   })
 ```
 This enpoint updates user information. An array of all the user information (wether its being updated or not) is sent to this endpoint, and it will change the information of the user that is already logged in.
@@ -215,7 +214,7 @@ var response = fetch('https://research-stream.herokuapp.com/user/signup/<the id 
     body: JSON.stringify(data),
 })
   .then(function(response) {
-    return response.json();
+    return response.text();
   })
 ```
 This is the endpoint used when a perticipant is logged in and wants to sign up for a study
@@ -331,14 +330,14 @@ fetch('https://research-stream.herokuapp.com/study/id/<someID>:id', {
         method: "GET",
     })
   .then(function(response) {
-    return response.json();
+    return response.text();
   })
 
 fetch('https://research-stream.herokuapp.com/study/EthicsClearance/<someID>:id', {
         method: "GET",
     })
   .then(function(response) {
-    return response.json();
+    return response;
   })
 ```
 These 2 endpoints return 
@@ -359,28 +358,28 @@ fetch('https://research-stream.herokuapp.com/study/name/<someName>', {
         method: "GET"
     })
   .then(function(response) {
-    return response.json();
+    return response.text();
   })
 
 fetch('https://research-stream.herokuapp.com/study/location/<someLocation>', {
         method: "GET"
     })
   .then(function(response) {
-    return response.json();
+    return response.text();
   })
 
 fetch('https://research-stream.herokuapp.com/study/lab/<some lab>', {
         method: "GET"
     })
   .then(function(response) {
-    return response.json();
+    return response.text();
   })
 
 fetch('https://research-stream.herokuapp.com/study/researcher/<some researcher>', {
         method: "GET"
     })
   .then(function(response) {
-    return response.json();
+    return response.text();
   }
 ```
 
