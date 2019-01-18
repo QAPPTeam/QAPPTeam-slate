@@ -416,6 +416,32 @@ HTTP request | returns
 
 
 
+# usage of email.js and job.js
+### email
+this is the method for sending the email, 
+open the file and 
+  1. set service to the email provider, 
+  2. set the user and from to your own email address, 
+  3. set the pass to your authentication passcode
+NEED TEST!
+-----------
+run this to send email.
+```javascript
+const email = require('email.js')
+send = new email()
+send.setDest("destination email addr")
+send.setTxt("path to the text file")
+send.setsubject("subject of the email")
+send.sendMail()
+```
+
+### job
+config the heroku scheduler to run this script daily, it will check the database and send email to user who have send_date = today 
+
+NEED TEST! 
+*run this locally first to see if it can grab data from database.*
+
+
 # TODO
 
 1. ~~~Messageing endpoint documentation~~~
