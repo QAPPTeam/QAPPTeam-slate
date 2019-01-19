@@ -52,6 +52,7 @@ var response = fetch('https://research-stream.herokuapp.com/user/registerResearc
   })
 
 ```
+
 >Signup endpoints are different for participants and researcher
 
 This function returns a json of the new user information in the form of the dataResearcher variable and prints this json to the console
@@ -96,6 +97,7 @@ var response = fetch('https://research-stream.herokuapp.com/user/registerPartici
   })
 
 ```
+
 >Signup endpoints are different for participants and researcher
 
 This function returns a json of the new user information in the form of the dataResearcher variable and prints this json to the console
@@ -147,9 +149,10 @@ Login is accessed via the endpoint
 * password
 
 ## logout endpoint
+
 ```javascript
 
-var response = fetch('https://research-stream.herokuapp.com/user/login ', {
+var response = fetch('https://research-stream.herokuapp.com/user/logout ', {
         method: "GET",
     })
   .then(function(response) {
@@ -157,11 +160,13 @@ var response = fetch('https://research-stream.herokuapp.com/user/login ', {
   })
 
 ```
+
 This returns a string stateting the user is logged out successfully, there are no parameters, if a user is not logged in the returned string will state this information instead
 
 ## User Update Endpoint
 
 >to update a participant different data needs to be used but they are both updates using the same endpoint
+
 ```javascript
 //data variable should be in the same format as the create user data values depending on the type of user
 let data = { 
@@ -185,6 +190,7 @@ var response = fetch('https://research-stream.herokuapp.com/user/update ', {
     return response.text();
   })
 ```
+
 This enpoint updates user information. An array of all the user information (wether its being updated or not) is sent to this endpoint, and it will change the information of the user that is already logged in.
 
 this endpoint returns a success message if the update was successfull
@@ -283,10 +289,10 @@ This enpdoint is also used to update a study, all fields can be changes except t
 * compensation
 * criteria
 * expectation
-* path to ethics clearance file
-* path to txt file for e mail content?
 * number of days in advance the reminder e mail will be sent
 * an array of the dates the trials will take place
+* the ethics clearance file passed to the fetch request through an html form
+* a txt file passed through with the content of the reminder email
 
 
 ## get all studies
