@@ -245,29 +245,25 @@ a participant cannot sign up for a trial more than once and cannot sign up for a
 ```javascript
 
 var fileField = document.querySelector("input[type='file'][multiple]"); //use htmp form with <input type="file" />
+var formData = new FormData();
 
-let data = {
-    "name" : "new study",
-    "details": "s detail",
-    "lab": "a lab",
-    "contactInfo" : "some contact information",
-    "location" : "a place",
-    "compensation": "prob money",
-    "criteria" : "a person",
-    "expectation" : "an expectation",
-    "emaildateoffset": 1,
-    "dates": "[01.01.2018, 01.02.2018]"//etc
-}
-
+forData.append('name':document.querySelector("#inputname") )
+forData.append('details':document.querySelector("#inputdetails") )
+forData.append('lab':document.querySelector("#inputlab") )
+forData.append('contactInfo':document.querySelector("#inputcontactInfo") )
+forData.append('location':document.querySelector("#inputlocation") )
+forData.append('compensation':document.querySelector("#inputcompensation") )
+forData.append('criteria':document.querySelector("#inputcriteria") )
+forData.append('expectations':document.querySelector("#expectations") )
+forData.append('emaildateoffset':document.querySelector("#emaildateoffset") )
+forData.append('dates':document.querySelector("#inputdates") )
 formData.append('ethics', fileField.files[0]);
 formData.append('emailcontent', fileField.files[1]);
 
 var response = fetch('https://research-stream.herokuapp.com/study/create ', {
     method: "POST",
-    headers: {
-        "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
+    credentials: 'include',
+    body: formData,
 })
   .then(function(response) {
     return response.json();
