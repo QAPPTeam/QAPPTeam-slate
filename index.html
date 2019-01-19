@@ -429,7 +429,7 @@ All the endpoints following this one require the login endpoint to be run first<
 <li>password</li>
 </ul>
 <h2 id='logout-endpoint'>logout endpoint</h2><pre class="highlight javascript tab-javascript"><code>
-<span class="kd">var</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">fetch</span><span class="p">(</span><span class="s1">'https://research-stream.herokuapp.com/user/login '</span><span class="p">,</span> <span class="p">{</span>
+<span class="kd">var</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">fetch</span><span class="p">(</span><span class="s1">'https://research-stream.herokuapp.com/user/logout '</span><span class="p">,</span> <span class="p">{</span>
         <span class="na">method</span><span class="p">:</span> <span class="s2">"GET"</span><span class="p">,</span>
     <span class="p">})</span>
   <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
@@ -440,32 +440,31 @@ All the endpoints following this one require the login endpoint to be run first<
 <p>This returns a string stateting the user is logged out successfully, there are no parameters, if a user is not logged in the returned string will state this information instead</p>
 <h2 id='user-update-endpoint'>User Update Endpoint</h2>
 <blockquote>
-<p>to update a participant different data needs to be used but they are both updates using the same endpoint
-```javascript
-//data variable should be in the same format as the create user data values depending on the type of user
-let data = { 
-                &quot;name&quot;: &quot;aname&quot;,
-                &quot;age&quot;: &quot;a number&quot;,
-                &quot;city&quot;: &quot;a city&quot;,
-                &quot;phonenum&quot;: &quot;a number&quot;,
-                &quot;email&quot;: &quot;an email&quot;,
-                &quot;password&quot;: &quot;a password&quot;,
-}</p>
+<p>to update a participant different data needs to be used but they are both updates using the same endpoint</p>
 </blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="c1">//data variable should be in the same format as the create user data values depending on the type of user</span>
+<span class="kd">let</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span> 
+                <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"aname"</span><span class="p">,</span>
+                <span class="s2">"age"</span><span class="p">:</span> <span class="s2">"a number"</span><span class="p">,</span>
+                <span class="s2">"city"</span><span class="p">:</span> <span class="s2">"a city"</span><span class="p">,</span>
+                <span class="s2">"phonenum"</span><span class="p">:</span> <span class="s2">"a number"</span><span class="p">,</span>
+                <span class="s2">"email"</span><span class="p">:</span> <span class="s2">"an email"</span><span class="p">,</span>
+                <span class="s2">"password"</span><span class="p">:</span> <span class="s2">"a password"</span><span class="p">,</span>
+<span class="p">}</span>
 
-<p>//this code registers a researcher
-var response = fetch(&#39;https://research-stream.herokuapp.com/user/update &#39;, {
-    method: &quot;POST&quot;,
-    headers: {
-        &quot;Content-Type&quot;: &quot;application/json&quot;,
-    },
-    body: JSON.stringify(data),
-})
-  .then(function(response) {
-    return response.text();
-  })
-```
-This enpoint updates user information. An array of all the user information (wether its being updated or not) is sent to this endpoint, and it will change the information of the user that is already logged in.</p>
+<span class="c1">//this code registers a researcher</span>
+<span class="kd">var</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">fetch</span><span class="p">(</span><span class="s1">'https://research-stream.herokuapp.com/user/update '</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">method</span><span class="p">:</span> <span class="s2">"POST"</span><span class="p">,</span>
+    <span class="na">headers</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"Content-Type"</span><span class="p">:</span> <span class="s2">"application/json"</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="na">body</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">),</span>
+<span class="p">})</span>
+  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">text</span><span class="p">();</span>
+  <span class="p">})</span>
+</code></pre>
+<p>This enpoint updates user information. An array of all the user information (wether its being updated or not) is sent to this endpoint, and it will change the information of the user that is already logged in.</p>
 
 <p>this endpoint returns a success message if the update was successfull</p>
 
@@ -556,10 +555,10 @@ it returns a success message if the participant is signed up successfully</p>
 <li>compensation</li>
 <li>criteria</li>
 <li>expectation</li>
-<li>path to ethics clearance file</li>
-<li>path to txt file for e mail content?</li>
 <li>number of days in advance the reminder e mail will be sent</li>
 <li>an array of the dates the trials will take place</li>
+<li>the ethics clearance file passed to the fetch request through an html form</li>
+<li>a txt file passed through with the content of the reminder email</li>
 </ul>
 <h2 id='get-all-studies'>get all studies</h2><pre class="highlight javascript tab-javascript"><code>
 <span class="kd">var</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">fetch</span><span class="p">(</span><span class="s1">'https://research-stream.herokuapp.com/study/get'</span><span class="p">,</span> <span class="p">{</span>
