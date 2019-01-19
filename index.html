@@ -533,29 +533,25 @@ it returns a success message if the participant is signed up successfully</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code>
 <span class="kd">var</span> <span class="nx">fileField</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">"input[type='file'][multiple]"</span><span class="p">);</span> <span class="c1">//use htmp form with &lt;input type="file" /&gt;</span>
+<span class="kd">var</span> <span class="nx">formData</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">FormData</span><span class="p">();</span>
 
-<span class="kd">let</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"name"</span> <span class="p">:</span> <span class="s2">"new study"</span><span class="p">,</span>
-    <span class="s2">"details"</span><span class="p">:</span> <span class="s2">"s detail"</span><span class="p">,</span>
-    <span class="s2">"lab"</span><span class="p">:</span> <span class="s2">"a lab"</span><span class="p">,</span>
-    <span class="s2">"contactInfo"</span> <span class="p">:</span> <span class="s2">"some contact information"</span><span class="p">,</span>
-    <span class="s2">"location"</span> <span class="p">:</span> <span class="s2">"a place"</span><span class="p">,</span>
-    <span class="s2">"compensation"</span><span class="p">:</span> <span class="s2">"prob money"</span><span class="p">,</span>
-    <span class="s2">"criteria"</span> <span class="p">:</span> <span class="s2">"a person"</span><span class="p">,</span>
-    <span class="s2">"expectation"</span> <span class="p">:</span> <span class="s2">"an expectation"</span><span class="p">,</span>
-    <span class="s2">"emaildateoffset"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="s2">"dates"</span><span class="p">:</span> <span class="s2">"[01.01.2018, 01.02.2018]"</span><span class="c1">//etc</span>
-<span class="p">}</span>
-
+<span class="nx">forData</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">'name'</span><span class="p">:</span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">"#inputname"</span><span class="p">)</span> <span class="p">)</span>
+<span class="nx">forData</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">'details'</span><span class="p">:</span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">"#inputdetails"</span><span class="p">)</span> <span class="p">)</span>
+<span class="nx">forData</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">'lab'</span><span class="p">:</span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">"#inputlab"</span><span class="p">)</span> <span class="p">)</span>
+<span class="nx">forData</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">'contactInfo'</span><span class="p">:</span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">"#inputcontactInfo"</span><span class="p">)</span> <span class="p">)</span>
+<span class="nx">forData</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">'location'</span><span class="p">:</span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">"#inputlocation"</span><span class="p">)</span> <span class="p">)</span>
+<span class="nx">forData</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">'compensation'</span><span class="p">:</span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">"#inputcompensation"</span><span class="p">)</span> <span class="p">)</span>
+<span class="nx">forData</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">'criteria'</span><span class="p">:</span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">"#inputcriteria"</span><span class="p">)</span> <span class="p">)</span>
+<span class="nx">forData</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">'expectations'</span><span class="p">:</span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">"#expectations"</span><span class="p">)</span> <span class="p">)</span>
+<span class="nx">forData</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">'emaildateoffset'</span><span class="p">:</span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">"#emaildateoffset"</span><span class="p">)</span> <span class="p">)</span>
+<span class="nx">forData</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">'dates'</span><span class="p">:</span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">"#inputdates"</span><span class="p">)</span> <span class="p">)</span>
 <span class="nx">formData</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">'ethics'</span><span class="p">,</span> <span class="nx">fileField</span><span class="p">.</span><span class="nx">files</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
 <span class="nx">formData</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">'emailcontent'</span><span class="p">,</span> <span class="nx">fileField</span><span class="p">.</span><span class="nx">files</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
 
 <span class="kd">var</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">fetch</span><span class="p">(</span><span class="s1">'https://research-stream.herokuapp.com/study/create '</span><span class="p">,</span> <span class="p">{</span>
     <span class="na">method</span><span class="p">:</span> <span class="s2">"POST"</span><span class="p">,</span>
-    <span class="na">headers</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">"Content-Type"</span><span class="p">:</span> <span class="s2">"application/json"</span><span class="p">,</span>
-    <span class="p">},</span>
-    <span class="na">body</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">),</span>
+    <span class="na">credentials</span><span class="p">:</span> <span class="s1">'include'</span><span class="p">,</span>
+    <span class="na">body</span><span class="p">:</span> <span class="nx">formData</span><span class="p">,</span>
 <span class="p">})</span>
   <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
