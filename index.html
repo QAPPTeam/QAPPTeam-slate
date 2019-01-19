@@ -254,6 +254,9 @@
                     <a href="#create-studies" class="toc-h2 toc-link" data-title="Create studies">Create studies</a>
                   </li>
                   <li>
+                    <a href="#get-all-studies" class="toc-h2 toc-link" data-title="get all studies">get all studies</a>
+                  </li>
+                  <li>
                     <a href="#get-studies-by-their-id" class="toc-h2 toc-link" data-title="get Studies by their ID">get Studies by their ID</a>
                   </li>
                   <li>
@@ -269,6 +272,17 @@
                   </li>
                   <li>
                     <a href="#how-to-use-it" class="toc-h2 toc-link" data-title="how to use it">how to use it</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#usage-of-email-js-and-job-js" class="toc-h1 toc-link" data-title="usage of email.js and job.js">usage of email.js and job.js</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#email" class="toc-h2 toc-link" data-title="email">email</a>
+                  </li>
+                  <li>
+                    <a href="#need-test" class="toc-h2 toc-link" data-title="NEED TEST!">NEED TEST!</a>
                   </li>
               </ul>
           </li>
@@ -396,7 +410,6 @@
     <span class="na">body</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">),</span>
 <span class="p">})</span>
 <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">text</span><span class="p">())</span>
     <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">text</span><span class="p">();</span>
 <span class="p">})</span>
 
@@ -420,7 +433,7 @@ All the endpoints following this one require the login endpoint to be run first<
         <span class="na">method</span><span class="p">:</span> <span class="s2">"GET"</span><span class="p">,</span>
     <span class="p">})</span>
   <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
+    <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">text</span><span class="p">();</span>
   <span class="p">})</span>
 
 </code></pre>
@@ -449,7 +462,7 @@ var response = fetch(&#39;https://research-stream.herokuapp.com/user/update &#39
     body: JSON.stringify(data),
 })
   .then(function(response) {
-    return response.json();
+    return response.text();
   })
 ```
 This enpoint updates user information. An array of all the user information (wether its being updated or not) is sent to this endpoint, and it will change the information of the user that is already logged in.</p>
@@ -478,7 +491,7 @@ This enpoint updates user information. An array of all the user information (wet
     <span class="na">body</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">),</span>
 <span class="p">})</span>
   <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
+    <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">text</span><span class="p">();</span>
   <span class="p">})</span>
 </code></pre>
 <p>This is the endpoint used when a perticipant is logged in and wants to sign up for a study
@@ -492,68 +505,69 @@ it returns a success message if the participant is signed up successfully</p>
 </ul>
 <h1 id='studies'>Studies</h1><h2 id='create-studies'>Create studies</h2>
 <blockquote>
-<p>before accessing this endpoint, access the login enpoint with researcher credentials
-```javascript
-let data = {
-    &quot;name&quot; : &quot;new study&quot;,
-    &quot;details&quot;: &quot;s detail&quot;,
-    &quot;lab&quot;: &quot;a lab&quot;,
-    &quot;contactInfo&quot; : &quot;some contact information&quot;,
-    &quot;location&quot; : &quot;a place&quot;,
-    &quot;compensation&quot;: &quot;prob money&quot;,
-    &quot;criteria&quot; : &quot;a person&quot;,
-    &quot;expectation&quot; : &quot;an expectation&quot;,
-    &quot;ethicsclearance&quot;: &quot;<a path to a file>&quot;,
-    &quot;emailcontent&quot;: &quot;<a path to a file>&quot;,
-    &quot;emaildateoffset&quot;: 1,
-    &quot;dates&quot;: &quot;[01.01.2018, 01.02.2018]&quot;//etc
-}</p>
+<p>before accessing this endpoint, access the login enpoint with researcher credentials</p>
 </blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="kd">var</span> <span class="nx">fileField</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">"input[type='file'][multiple]"</span><span class="p">);</span> <span class="c1">//use htmp form with &lt;input type="file" /&gt;</span>
 
-<p>var response = fetch(&#39;https://research-stream.herokuapp.com/study/create &#39;, {
-    method: &quot;POST&quot;,
-    headers: {
-        &quot;Content-Type&quot;: &quot;application/json&quot;,
-    },
-    body: JSON.stringify(data),
-})
-  .then(function(response) {
-    return response.json();
-  })</p>
-<pre class="highlight plaintext"><code>Creates a study and saves it to the studies collection of the database.
+<span class="kd">let</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"name"</span> <span class="p">:</span> <span class="s2">"new study"</span><span class="p">,</span>
+    <span class="s2">"details"</span><span class="p">:</span> <span class="s2">"s detail"</span><span class="p">,</span>
+    <span class="s2">"lab"</span><span class="p">:</span> <span class="s2">"a lab"</span><span class="p">,</span>
+    <span class="s2">"contactInfo"</span> <span class="p">:</span> <span class="s2">"some contact information"</span><span class="p">,</span>
+    <span class="s2">"location"</span> <span class="p">:</span> <span class="s2">"a place"</span><span class="p">,</span>
+    <span class="s2">"compensation"</span><span class="p">:</span> <span class="s2">"prob money"</span><span class="p">,</span>
+    <span class="s2">"criteria"</span> <span class="p">:</span> <span class="s2">"a person"</span><span class="p">,</span>
+    <span class="s2">"expectation"</span> <span class="p">:</span> <span class="s2">"an expectation"</span><span class="p">,</span>
+    <span class="s2">"emaildateoffset"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">"dates"</span><span class="p">:</span> <span class="s2">"[01.01.2018, 01.02.2018]"</span><span class="c1">//etc</span>
+<span class="p">}</span>
 
-The email and the name of the researcher is taken from the login information and the field "ethicsClearance" stores a file for the proof of ethics clearance - the file must be less than 14 mb
+<span class="nx">formData</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">'ethics'</span><span class="p">,</span> <span class="nx">fileField</span><span class="p">.</span><span class="nx">files</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+<span class="nx">formData</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">'emailcontent'</span><span class="p">,</span> <span class="nx">fileField</span><span class="p">.</span><span class="nx">files</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
 
-This enpdoint is also used to update a study, all fields can be changes except the researcher email and name (unless these are fist changed in the user object)
+<span class="kd">var</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">fetch</span><span class="p">(</span><span class="s1">'https://research-stream.herokuapp.com/study/create '</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">method</span><span class="p">:</span> <span class="s2">"POST"</span><span class="p">,</span>
+    <span class="na">headers</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"Content-Type"</span><span class="p">:</span> <span class="s2">"application/json"</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="na">body</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">),</span>
+<span class="p">})</span>
+  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
+  <span class="p">})</span>
 
-### HTTP request
+</code></pre>
+<p>Creates a study and saves it to the studies collection of the database.</p>
 
-* POST https://research-stream.herokuapp.com/study/create
+<p>The email and the name of the researcher is taken from the login information and the field &quot;ethicsClearance&quot; stores a file for the proof of ethics clearance - the file must be less than 14 mb</p>
 
-###study paratemers
-* name
-* details
-* lab
-* contactInfo
-* location
-* compensation
-* criteria
-* expectation
-* path to ethics clearance file
-* path to txt file for e mail content?
-* number of days in advance the reminder e mail will be sent
-* an array of the dates the trials will take place
-
-
-## get all studies
-```javascript
-
-var response = fetch('https://research-stream.herokuapp.com/study/get', {
-        method: "GET"
-    })
-  .then(function(response) {
-    return response.json();
-  })
+<p>This enpdoint is also used to update a study, all fields can be changes except the researcher email and name (unless these are fist changed in the user object)</p>
+<h3 id='http-request'>HTTP request</h3>
+<ul>
+<li>POST https://research-stream.herokuapp.com/study/create</li>
+</ul>
+<h3 id='study-paratemers'>study paratemers</h3>
+<ul>
+<li>name</li>
+<li>details</li>
+<li>lab</li>
+<li>contactInfo</li>
+<li>location</li>
+<li>compensation</li>
+<li>criteria</li>
+<li>expectation</li>
+<li>path to ethics clearance file</li>
+<li>path to txt file for e mail content?</li>
+<li>number of days in advance the reminder e mail will be sent</li>
+<li>an array of the dates the trials will take place</li>
+</ul>
+<h2 id='get-all-studies'>get all studies</h2><pre class="highlight javascript tab-javascript"><code>
+<span class="kd">var</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">fetch</span><span class="p">(</span><span class="s1">'https://research-stream.herokuapp.com/study/get'</span><span class="p">,</span> <span class="p">{</span>
+        <span class="na">method</span><span class="p">:</span> <span class="s2">"GET"</span>
+    <span class="p">})</span>
+  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
+  <span class="p">})</span>
 
 </code></pre>
 <blockquote>
@@ -591,7 +605,7 @@ fetch(&#39;https://research-stream.herokuapp.com/study/id/<someID>:id&#39;, {
         method: &quot;GET&quot;,
     })
   .then(function(response) {
-    return response.json();
+    return response.text();
   })</p>
 </blockquote>
 
@@ -599,7 +613,7 @@ fetch(&#39;https://research-stream.herokuapp.com/study/id/<someID>:id&#39;, {
         method: &quot;GET&quot;,
     })
   .then(function(response) {
-    return response.json();
+    return response;
   })
 ```
 These 2 endpoints return 
@@ -622,7 +636,7 @@ fetch(&#39;https://research-stream.herokuapp.com/study/name/<someName>&#39;, {
         method: &quot;GET&quot;
     })
   .then(function(response) {
-    return response.json();
+    return response.text();
   })</p>
 </blockquote>
 
@@ -630,21 +644,21 @@ fetch(&#39;https://research-stream.herokuapp.com/study/name/<someName>&#39;, {
         method: &quot;GET&quot;
     })
   .then(function(response) {
-    return response.json();
+    return response.text();
   })</p>
 
 <p>fetch(&#39;https://research-stream.herokuapp.com/study/lab/<some lab>&#39;, {
         method: &quot;GET&quot;
     })
   .then(function(response) {
-    return response.json();
+    return response.text();
   })</p>
 
 <p>fetch(&#39;https://research-stream.herokuapp.com/study/researcher/<some researcher>&#39;, {
         method: &quot;GET&quot;
     })
   .then(function(response) {
-    return response.json();
+    return response.text();
   }
 ```</p>
 
@@ -696,6 +710,27 @@ fetch(&#39;https://research-stream.herokuapp.com/study/name/<someName>&#39;, {
 <li>dump_from_server.dump will return the chat history, need to insert it into the web page. </li>
 <li>encryption haven&#39;t been tested yet</li>
 </ol>
+<h1 id='usage-of-email-js-and-job-js'>usage of email.js and job.js</h1><h3 id='email'>email</h3>
+<p>this is the method for sending the email, 
+open the file and 
+  1. set service to the email provider, 
+  2. set the user and from to your own email address, 
+  3. set the pass to your authentication passcode</p>
+<h2 id='need-test'>NEED TEST!</h2>
+<p>run this to send email.
+<code>javascript
+const email = require(&#39;email.js&#39;)
+send = new email()
+send.setDest(&quot;destination email addr&quot;)
+send.setTxt(&quot;path to the text file&quot;)
+send.setsubject(&quot;subject of the email&quot;)
+send.sendMail()
+</code></p>
+<h3 id='job'>job</h3>
+<p>config the heroku scheduler to run this script daily, it will check the database and send email to user who have send_date = today </p>
+
+<p>NEED TEST! 
+<em>run this locally first to see if it can grab data from database.</em></p>
 <h1 id='todo'>TODO</h1>
 <ol>
 <li>~<del>Messageing endpoint documentation</del>~</li>
