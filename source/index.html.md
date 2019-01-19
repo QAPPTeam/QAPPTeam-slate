@@ -217,6 +217,7 @@ var response = fetch('https://research-stream.herokuapp.com/user/signup/<the id 
     return response.text();
   })
 ```
+
 This is the endpoint used when a perticipant is logged in and wants to sign up for a study
 it returns a success message if the participant is signed up successfully
 
@@ -229,8 +230,12 @@ a participant cannot sign up for a trial more than once and cannot sign up for a
 # Studies
 
 ## Create studies
+
 > before accessing this endpoint, access the login enpoint with researcher credentials
+
 ```javascript
+var fileField = document.querySelector("input[type='file'][multiple]"); //use htmp form with <input type="file" />
+
 let data = {
     "name" : "new study",
     "details": "s detail",
@@ -240,11 +245,12 @@ let data = {
     "compensation": "prob money",
     "criteria" : "a person",
     "expectation" : "an expectation",
-    "ethicsclearance": "<a path to a file>",
-    "emailcontent": "<a path to a file>",
     "emaildateoffset": 1,
     "dates": "[01.01.2018, 01.02.2018]"//etc
 }
+
+formData.append('ethics', fileField.files[0]);
+formData.append('emailcontent', fileField.files[1]);
 
 var response = fetch('https://research-stream.herokuapp.com/study/create ', {
     method: "POST",
