@@ -200,7 +200,7 @@ HTTP request
 * POST https://research-stream.herokuapp.com/user/update
 
 researcher | participant
--------------------------
+--------------------- | ---------
  name | Name
  institution | age
  department | city
