@@ -247,16 +247,16 @@ a participant cannot sign up for a trial more than once and cannot sign up for a
 var fileField = document.querySelector("input[type='file'][multiple]"); //use htmp form with <input type="file" />
 var formData = new FormData();
 
-forData.append('name':document.querySelector("#inputname") )
-forData.append('details':document.querySelector("#inputdetails") )
-forData.append('lab':document.querySelector("#inputlab") )
-forData.append('contactInfo':document.querySelector("#inputcontactInfo") )
-forData.append('location':document.querySelector("#inputlocation") )
-forData.append('compensation':document.querySelector("#inputcompensation") )
-forData.append('criteria':document.querySelector("#inputcriteria") )
-forData.append('expectations':document.querySelector("#expectations") )
-forData.append('emaildateoffset':document.querySelector("#emaildateoffset") )
-forData.append('dates':document.querySelector("#inputdates") )
+forData.append('name':document.querySelector("#inputname").value )
+forData.append('details':document.querySelector("#inputdetails").value )
+forData.append('lab':document.querySelector("#inputlab").value )
+forData.append('contactInfo':document.querySelector("#inputcontactInfo").value )
+forData.append('location':document.querySelector("#inputlocation").value )
+forData.append('compensation':document.querySelector("#inputcompensation").value )
+forData.append('criteria':document.querySelector("#inputcriteria").value )
+forData.append('expectations':document.querySelector("#expectations").value )
+forData.append('emaildateoffset':document.querySelector("#emaildateoffset").value )
+forData.append('dates':document.querySelector("#inputdates").value )
 formData.append('ethics', fileField.files[0]);
 formData.append('emailcontent', fileField.files[1]);
 
