@@ -337,6 +337,7 @@ accessible by
 ## get Studies by their ID
 
 >the ethics clearance data of a study is stored as buffer data
+
 ```javascript
 fetch('https://research-stream.herokuapp.com/study/id/<someID>:id', {
         method: "GET",
