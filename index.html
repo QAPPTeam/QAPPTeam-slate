@@ -240,9 +240,6 @@
                     <a href="#user-update-endpoint" class="toc-h2 toc-link" data-title="User Update Endpoint">User Update Endpoint</a>
                   </li>
                   <li>
-                    <a href="#researcher-participant" class="toc-h2 toc-link" data-title="researcher | participant">researcher | participant</a>
-                  </li>
-                  <li>
                     <a href="#participant-signs-up-for-a-study" class="toc-h2 toc-link" data-title="participant signs up for a study">participant signs up for a study</a>
                   </li>
               </ul>
@@ -473,14 +470,40 @@ All the endpoints following this one require the login endpoint to be run first<
 <ul>
 <li>POST https://research-stream.herokuapp.com/user/update</li>
 </ul>
-<h2 id='researcher-participant'>researcher | participant</h2>
-<p>name | Name
- institution | age
- department | city
- address | phone number
- country | email
- phone number | password
- email
+
+<table><thead>
+<tr>
+<th>researcher</th>
+<th>participant</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>Name</td>
+</tr>
+<tr>
+<td>institution</td>
+<td>age</td>
+</tr>
+<tr>
+<td>department</td>
+<td>city</td>
+</tr>
+<tr>
+<td>address</td>
+<td>phone number</td>
+</tr>
+<tr>
+<td>country</td>
+<td>email</td>
+</tr>
+<tr>
+<td>phone number</td>
+<td>password</td>
+</tr>
+</tbody></table>
+
+<p>email
  password</p>
 <h2 id='participant-signs-up-for-a-study'>participant signs up for a study</h2><pre class="highlight javascript tab-javascript"><code><span class="kd">var</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">fetch</span><span class="p">(</span><span class="s1">'https://research-stream.herokuapp.com/user/signup/&lt;the id of a study&gt;/&lt;the date the participant is signin up for&gt; '</span><span class="p">,</span> <span class="p">{</span>
     <span class="na">method</span><span class="p">:</span> <span class="s2">"POST"</span><span class="p">,</span>
