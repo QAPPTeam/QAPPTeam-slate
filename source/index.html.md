@@ -168,6 +168,7 @@ This returns a string stateting the user is logged out successfully, there are n
 >to update a participant different data needs to be used but they are both updates using the same endpoint
 
 ```javascript
+
 //data variable should be in the same format as the create user data values depending on the type of user
 let data = { 
                 "name": "aname",
@@ -211,7 +212,9 @@ researcher | participant
  password
 
 ##participant signs up for a study
+
 ```javascript
+
 var response = fetch('https://research-stream.herokuapp.com/user/signup/<the id of a study>/<the date the participant is signin up for> ', {
     method: "POST",
     headers: {
@@ -240,6 +243,7 @@ a participant cannot sign up for a trial more than once and cannot sign up for a
 > before accessing this endpoint, access the login enpoint with researcher credentials
 
 ```javascript
+
 var fileField = document.querySelector("input[type='file'][multiple]"); //use htmp form with <input type="file" />
 
 let data = {
@@ -296,6 +300,7 @@ This enpdoint is also used to update a study, all fields can be changes except t
 
 
 ## get all studies
+
 ```javascript
 
 var response = fetch('https://research-stream.herokuapp.com/study/get', {
@@ -339,6 +344,7 @@ accessible by
 >the ethics clearance data of a study is stored as buffer data
 
 ```javascript
+
 fetch('https://research-stream.herokuapp.com/study/id/<someID>:id', {
         method: "GET",
     })
@@ -365,8 +371,11 @@ B) the Ethics Clearance file for a study according to the study ID
 * ID of an existing study (in the url)
 
 ## get studies by other parameters
+
 >before accessing any of the folloing endpoints login
-```JavaScript
+
+```javascript
+
 fetch('https://research-stream.herokuapp.com/study/name/<someName>', {
         method: "GET"
     })
@@ -439,7 +448,9 @@ open the file and
 NEED TEST!
 -----------
 run this to send email.
+
 ```javascript
+
 const email = require('email.js')
 send = new email()
 send.setDest("destination email addr")
